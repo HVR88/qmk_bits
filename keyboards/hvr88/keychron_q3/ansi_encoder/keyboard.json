@@ -1,6 +1,6 @@
 {
     "usb": {
-        "pid": "0x7082",
+        "pid": "0x021D",
         "device_version": "1.0.0"
     },
     "encoder": {
@@ -1527,5 +1527,5 @@
             ]
         }
     },
-    "keyboard_name": "Q3 Godspeed Retro"
+    "keyboard_name": "Pingato Q3 GS-Retro"
 }
