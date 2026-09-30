@@ -33,7 +33,7 @@ With a keyboard configuration that macOS recognizes through an appropriate Apple
 
 > [!NOTE]
 >
-> | Key | Result |
+> | Keys | Results |
 > | --- | --- |
 > | **F1 to F12** | Apple's normal media-keys (except DICTATION and DO NOT DISTURB) **\*** |
 > | **Fn + F1 to F12** | Real Function Keys |
