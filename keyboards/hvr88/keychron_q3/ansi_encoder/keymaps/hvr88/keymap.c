@@ -25,11 +25,11 @@ enum layers{
 
 // Tap: Mute / Hold: Power
 #define MUTE_PWR LT(0, KC_MUTE)
-#define KC_SCREENSHOT LT(0, KC_ESC)
 
 enum custom_keycodes {
     MAC_GLOBE_FN = SAFE_RANGE,
     MAC_SCREENSHOT_CTRL,
+    KC_SCREENSHOT,
 };
 
 static uint16_t mac_globe_fn_timer;
