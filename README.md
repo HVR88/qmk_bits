@@ -49,7 +49,6 @@ With a keyboard configuration that macOS recognizes through an appropriate Apple
 > | **Fn + E** | Emoji & Symbols |
 > | **Fn + F** | Full Screen |
 > | **Fn + H** | Show Desktop |
-> | **Fn + M** | Mission Control |
 > | **Fn + N** | Notification Center |
 > | **Fn + Q** | Quick Note |
 > | **Fn + S** | Search / Siri |>
