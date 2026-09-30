@@ -4,6 +4,10 @@ Reusable QMK Community Module for macOS-specific keyboard actions.
 
 ## Keycodes
 
+- `MAC_GLOBE` — native Apple Globe
+- `MAC_APPLE_FN` — native Apple Fn
+- `MAC_DICTATION` — Apple Dictation
+- `MAC_DND` — Apple Do Not Disturb
 - `MAC_GLOBE_FN` — tap for Globe, hold for native Apple Fn
 - `MAC_SCRNSHOT` — Shift-Command-3
 - `MAC_SCRNSHOT_CB` — Control-Shift-Command-3
