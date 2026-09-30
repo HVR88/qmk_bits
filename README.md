@@ -67,5 +67,5 @@ On a generic VID/PID, macOS does not provide the Apple FnKeyboardUsageMap / FnFu
 ---
 
 > [!NOTE]
-> <strong>*</strong> the only two codes that are not automatically handled by the system are **DICTATION (F5)** and **DO_NO_DISTURB (F6)** - they just aren't enabled by default on any known Apple VID/PID combination. To add them as keys, use drashna's extra_extra_key module: https://github.com/drashna/qmk_modules/tree/main/extra_extra_key
+> <strong>*</strong> the only two codes that are not automatically handled by the system are **DICTATION (F5)** and **DO NOT DISTURB (F6)** - they just aren't enabled by default on any known Apple VID/PID combination. To add them as keys, use drashna's extra_extra_key module: https://github.com/drashna/qmk_modules/tree/main/extra_extra_key
 
