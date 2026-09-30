@@ -105,7 +105,7 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
         case MAC_SCRNSHOT_OPT_CB:
             if (record->event.pressed) return process_self_cancel_action(keycode, C(SCMD(KC_5)));
             return false;
-        case MAC_ASKSIRI_AREA:
+        case MAC_SIRI_AREA:
             if (record->event.pressed) return process_self_cancel_action(keycode, S(KC_6));
             return false;
         case MAC_SIRI_WINDOW:
