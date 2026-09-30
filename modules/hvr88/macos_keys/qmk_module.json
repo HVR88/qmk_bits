@@ -3,14 +3,44 @@
     "maintainer": "HVR88",
     "license": "GPL-2.0-or-later",
     "keycodes": [
-        {"key": "MAC_GLOBE_FN"},
-        {"key": "MAC_SCRNSHOT"},
-        {"key": "MAC_SCRNSHOT_CB"},
-        {"key": "MAC_SCRNSHOT_AREA"},
-        {"key": "MAC_SCRNSHOT_AREA_CB"},
-        {"key": "MAC_SCRNSHOT_OPT"},
-        {"key": "MAC_SCRNSHOT_OPT_CB"},
-        {"key": "MAC_ASKSIRI_AREA"},
-        {"key": "MAC_SIRI_WINDOW"}
+        {
+            "key": "MAC_GLOBE"
+        },
+        {
+            "key": "MAC_APPLE_FN"
+        },
+        {
+            "key": "MAC_DICTATION"
+        },
+        {
+            "key": "MAC_DND"
+        },
+        {
+            "key": "MAC_GLOBE_FN"
+        },
+        {
+            "key": "MAC_SCRNSHOT"
+        },
+        {
+            "key": "MAC_SCRNSHOT_CB"
+        },
+        {
+            "key": "MAC_SCRNSHOT_AREA"
+        },
+        {
+            "key": "MAC_SCRNSHOT_AREA_CB"
+        },
+        {
+            "key": "MAC_SCRNSHOT_OPT"
+        },
+        {
+            "key": "MAC_SCRNSHOT_OPT_CB"
+        },
+        {
+            "key": "MAC_ASKSIRI_AREA"
+        },
+        {
+            "key": "MAC_SIRI_WINDOW"
+        }
     ]
 }
