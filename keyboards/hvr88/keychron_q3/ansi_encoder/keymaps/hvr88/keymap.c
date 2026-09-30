@@ -28,14 +28,14 @@ enum layers{
 
 enum custom_keycodes {
     MAC_GLOBE_FN = SAFE_RANGE,
-    MAC_SS_SCREEN,
-    MAC_SS_SCREEN_CB,
-    MAC_SS_AREA,
-    MAC_SS_AREA_CB,
-    MAC_SS_OPTIONS,
-    MAC_SS_OPTIONS_CB,
+    MAC_SCRNSHOT_SCREEN,
+    MAC_SCRNSHOT_SCREEN_CB,
+    MAC_SCRNSHOT_AREA,
+    MAC_SCRNSHOT_AREA_CB,
+    MAC_SCRNSHOT_OPTIONS,
+    MAC_SCRNSHOT_OPTIONS_CB,
     MAC_ASKSIRI_AREA,
-    MAC_ASKSIRI_WINDOW,
+    MAC_SIRI_WINDOW,
 };
 
 static uint16_t mac_globe_fn_timer;
@@ -47,7 +47,7 @@ bool hvr88_red_base = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MAC_BASE] = LAYOUT_tkl_f13_ansi(
-        KC_ESC,     KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,    MUTE_PWR,  MAC_SS_AREA, KC_F19,   KC_F18,
+        KC_ESC,     KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,    MUTE_PWR,  MAC_SCRNSHOT_AREA, KC_F19,   KC_F18,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,     KC_BSPC,  KC_INS,   KC_HOME,  KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,    KC_BSLS,  KC_DEL,   KC_END,   KC_PGDN,
         KC_LCTL,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_ENT,
@@ -155,34 +155,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case MUTE_PWR:
             return process_tap_or_long_press_key(record, KC_PWR);
 
-        case MAC_SS_SCREEN:
-        case MAC_SS_SCREEN_CB:
-        case MAC_SS_AREA:
-        case MAC_SS_AREA_CB:
-        case MAC_SS_OPTIONS:
-        case MAC_SS_OPTIONS_CB:
+        case MAC_SCRNSHOT_SCREEN:
+        case MAC_SCRNSHOT_SCREEN_CB:
+        case MAC_SCRNSHOT_AREA:
+        case MAC_SCRNSHOT_AREA_CB:
+        case MAC_SCRNSHOT_OPTIONS:
+        case MAC_SCRNSHOT_OPTIONS_CB:
             if (record->event.pressed) {
                 if (mac_last_screenshot_keycode == keycode) {
                     tap_code(KC_ESC);
                     mac_last_screenshot_keycode = 0;
                 } else {
                     switch (keycode) {
-                        case MAC_SS_SCREEN:
+                        case MAC_SCRNSHOT_SCREEN:
                             tap_code16(SCMD(KC_3));
                             break;
-                        case MAC_SS_SCREEN_CB:
+                        case MAC_SCRNSHOT_SCREEN_CB:
                             tap_code16(C(SCMD(KC_3)));
                             break;
-                        case MAC_SS_AREA:
+                        case MAC_SCRNSHOT_AREA:
                             tap_code16(SCMD(KC_4));
                             break;
-                        case MAC_SS_AREA_CB:
+                        case MAC_SCRNSHOT_AREA_CB:
                             tap_code16(C(SCMD(KC_4)));
                             break;
-                        case MAC_SS_OPTIONS:
+                        case MAC_SCRNSHOT_OPTIONS:
                             tap_code16(SCMD(KC_5));
                             break;
-                        case MAC_SS_OPTIONS_CB:
+                        case MAC_SCRNSHOT_OPTIONS_CB:
                             tap_code16(C(SCMD(KC_5)));
                             break;
                     }
@@ -197,7 +197,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
 
-        case MAC_ASKSIRI_WINDOW:
+        case MAC_SIRI_WINDOW:
             if (record->event.pressed) {
                 tap_code16(SCMD(KC_SPC));
             }
