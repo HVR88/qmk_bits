@@ -28,20 +28,24 @@ enum layers{
 
 enum custom_keycodes {
     MAC_GLOBE_FN = SAFE_RANGE,
-    MAC_SCREENSHOT_CTRL,
-    KC_SCREENSHOT,
+    MAC_SCREENSHOT_SCREEN,
+    MAC_SCREENSHOT_SCREEN_CLIPBOARD,
+    MAC_SCREENSHOT_REGION,
+    MAC_SCREENSHOT_REGION_CLIPBOARD,
+    MAC_SCREENSHOT_WINDOW,
+    MAC_SCREENSHOT_WINDOW_CLIPBOARD,
 };
 
 static uint16_t mac_globe_fn_timer;
 static bool mac_globe_fn_pressed;
 static bool mac_apple_fn_active;
-static bool mac_screenshot_active;
+static uint16_t mac_last_screenshot_keycode;
 
 bool hvr88_red_base = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MAC_BASE] = LAYOUT_tkl_f13_ansi(
-        KC_ESC,     KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,    MUTE_PWR,  KC_SCREENSHOT, KC_F19,   KC_F18,
+        KC_ESC,     KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,    MUTE_PWR,  MAC_SCREENSHOT_REGION, KC_F19,   KC_F18,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,     KC_BSPC,  KC_INS,   KC_HOME,  KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,    KC_BSLS,  KC_DEL,   KC_END,   KC_PGDN,
         KC_LCTL,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_ENT,
@@ -149,28 +153,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case MUTE_PWR:
             return process_tap_or_long_press_key(record, KC_PWR);
 
-        case KC_SCREENSHOT:
+        case MAC_SCREENSHOT_SCREEN:
+        case MAC_SCREENSHOT_SCREEN_CLIPBOARD:
+        case MAC_SCREENSHOT_REGION:
+        case MAC_SCREENSHOT_REGION_CLIPBOARD:
+        case MAC_SCREENSHOT_WINDOW:
+        case MAC_SCREENSHOT_WINDOW_CLIPBOARD:
             if (record->event.pressed) {
-                if (mac_screenshot_active) {
+                if (mac_last_screenshot_keycode == keycode) {
                     tap_code(KC_ESC);
-                    mac_screenshot_active = false;
+                    mac_last_screenshot_keycode = 0;
                 } else {
-                    if (get_mods() == MOD_BIT(KC_LCMD)) {
-                        tap_code16(SCMD(KC_5));
-                    } else {
-                        tap_code16(SCMD(KC_4));
+                    switch (keycode) {
+                        case MAC_SCREENSHOT_SCREEN:
+                            tap_code16(SCMD(KC_3));
+                            break;
+                        case MAC_SCREENSHOT_SCREEN_CLIPBOARD:
+                            tap_code16(C(SCMD(KC_3)));
+                            break;
+                        case MAC_SCREENSHOT_REGION:
+                            tap_code16(SCMD(KC_4));
+                            break;
+                        case MAC_SCREENSHOT_REGION_CLIPBOARD:
+                            tap_code16(C(SCMD(KC_4)));
+                            break;
+                        case MAC_SCREENSHOT_WINDOW:
+                            tap_code16(SCMD(KC_5));
+                            break;
+                        case MAC_SCREENSHOT_WINDOW_CLIPBOARD:
+                            tap_code16(C(SCMD(KC_5)));
+                            break;
                     }
-                    mac_screenshot_active = true;
-                }
-            }
-            return false;
-
-        case MAC_SCREENSHOT_CTRL:
-            if (record->event.pressed) {
-                if (get_mods() == MOD_BIT(KC_LCMD)) {
-                    tap_code16(C(SCMD(KC_5)));
-                } else {
-                    tap_code16(C(SCMD(KC_4)));
+                    mac_last_screenshot_keycode = keycode;
                 }
             }
             return false;
