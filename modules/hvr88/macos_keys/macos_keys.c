@@ -84,7 +84,12 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) return process_self_cancel_action(keycode, C(SCMD(KC_3)));
             return false;
         case MAC_SCRNSHOT_AREA:
-            if (record->event.pressed) return process_self_cancel_action(keycode, SCMD(KC_4));
+            if (record->event.pressed) {
+                if (mac_globe_fn_pressed) {
+                    return process_self_cancel_action(MAC_SCRNSHOT_AREA_CB, C(SCMD(KC_4)));
+                }
+                return process_self_cancel_action(MAC_SCRNSHOT_AREA, SCMD(KC_4));
+            }
             return false;
         case MAC_SCRNSHOT_AREA_CB:
             if (record->event.pressed) return process_self_cancel_action(keycode, C(SCMD(KC_4)));
