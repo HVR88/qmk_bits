@@ -28,6 +28,7 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
     if (mac_globe_fn_pressed &&
         record->event.pressed &&
         keycode != MAC_GLOBE_FN &&
+        keycode != MAC_SCRNSHOT_AREA &&
         !mac_apple_fn_active) {
         register_code16(KC_APPLE_FN);
         mac_apple_fn_active = true;
