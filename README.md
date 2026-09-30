@@ -4,9 +4,6 @@
 See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98ce37414c6c4?permalink_comment_id=6397510#gistcomment-6397510
 <br>
 <br>
-
-## The information and macOS behavior described are current as of macOS 27 (2026)<br>No claims are made for prior nor future macOS releases.<br><br>
-
 > [!IMPORTANT]
 >### Fn support, and other non-standard (vendor-defined) HID usages, are hard-coded into macOS.
 >#### They're enabled by macOS only for specific Apple VID/PID combinations recognized during USB enumeration.
@@ -32,7 +29,7 @@ This is distinct/different from the **Globe** key.
 
 ### Why this matters
 
-With a keyboard configuration that macOS recognizes through an appropriate Apple keyboard personality, `FF/03` participates in the native Apple Fn behavior, with the mappings below. Globe on third party keyboards does not - _except for single press opening Emoji picker._
+With a keyboard configuration that macOS recognizes through an appropriate Apple keyboard personality, `FF/03` participates in the native Apple Fn behavior, with the mappings below. Globe does not.
 
 > [!NOTE]
 >
@@ -45,14 +42,13 @@ With a keyboard configuration that macOS recognizes through an appropriate Apple
 > | **Fn + Up** | Page Up |
 > | **Fn + Down** | Page Down |
 > | **Fn + Delete (Backspace)** | DEL (Forward Delete) |
-> | **Fn Single Press** | Emoji & Symbols |
 > | **Fn + A** | Dock |
-> | **Fn + SHIFT + A** | Apps / Launchpad |
 > | **Fn + C** | Control Center |
 > | **Fn + D** | Dictation |
 > | **Fn + E** | Emoji & Symbols |
 > | **Fn + F** | Full Screen |
 > | **Fn + H** | Show Desktop |
+> | **Fn + M** | Mission Control |
 > | **Fn + N** | Notification Center |
 > | **Fn + Q** | Quick Note |
 > | **Fn + S** | Search / Siri |>
@@ -70,5 +66,5 @@ On a generic VID/PID, macOS does not provide the Apple FnKeyboardUsageMap / FnFu
 ---
 
 > [!NOTE]
-> <strong>*</strong> the only two codes that are not automatically handled by the system are **DICTATION (F5)** and **DO NOT DISTURB (F6)** - they just aren't enabled by default on any known Apple VID/PID combination. To add them as keys, use drashna's extra_extra_key module: https://github.com/drashna/qmk_modules/tree/main/extra_extra_key
+> <strong>*</strong> the only two codes that are not automatically handled by the system are DICTATION (F5) and DO_NO_DISTURB (F6) - they just aren't enabled by default on any known Apple VID/PID combination. To get them, use drashna's extra_extra_key module: https://github.com/drashna/qmk_modules/tree/main/extra_extra_key
 
