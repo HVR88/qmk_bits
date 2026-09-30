@@ -10,21 +10,11 @@ A customizable 80% keyboard.
 
 Make example for this keyboard (after setting up your build environment):
 
-    make keychron/q3_hvr88/ansi:default
-    make keychron/q3_hvr88/ansi_encoder:default
-    make keychron/q3_hvr88/iso:default
-    make keychron/q3_hvr88/iso_encoder:default
-    make keychron/q3_hvr88/jis:default
-    make keychron/q3_hvr88/jis_encoder:default
+    make hvr88/keychron_q3:hvr88
 
 Flashing example for this keyboard:
 
-    make keychron/q3_hvr88/ansi:default:flash
-    make keychron/q3_hvr88/ansi_encoder:default:flash
-    make keychron/q3_hvr88/iso:default:flash
-    make keychron/q3_hvr88/iso_encoder:default:flash
-    make keychron/q3_hvr88/jis:default:flash
-    make keychron/q3_hvr88/jis_encoder:default:flash
+    make hvr88/keychron_q3:hvr88:flash
 
 **Reset Key**: Hold down the key located at *K00*, commonly programmed as *Esc* while plugging in the keyboard.
 

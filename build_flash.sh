@@ -3,7 +3,7 @@ set -e
 
 BITS="$HOME/Code/QMK/qmk_bits"
 QMK="$HOME/Code/QMK/qmk_firmware"
-KEYBOARD="hvr88/keychron_q3/ansi_encoder"
+KEYBOARD="hvr88/keychron_q3"
 KEYMAP="hvr88"
 
 pull() {
@@ -21,12 +21,13 @@ copy() {
 compile() {
     echo "==> Compiling"
     cd "$QMK"
+    qmk config user.keyboard="$KEYBOARD"
     qmk compile -kb "$KEYBOARD" -km "$KEYMAP"
 }
 
 flash() {
     echo "==> Flashing"
-    BIN="$QMK/hvr88_keychron_q3_ansi_encoder_hvr88.bin"
+    BIN="$QMK/hvr88_keychron_q3_hvr88.bin"
 
     if [ ! -f "$BIN" ]; then
         echo "ERROR: Firmware binary not found: $BIN"
