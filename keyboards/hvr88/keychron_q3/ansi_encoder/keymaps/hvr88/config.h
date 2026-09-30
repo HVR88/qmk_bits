@@ -1,3 +1,3 @@
 #pragma once
 
-#define MACOS_KEYS_FN_LAYER 1
+#define MAC_FN_QMK_FN_LAYER 1

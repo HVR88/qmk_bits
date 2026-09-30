@@ -7,7 +7,7 @@
             "key": "MAC_GLOBE"
         },
         {
-            "key": "MAC_APPLE_FN"
+            "key": "MAC_FN_KEY"
         },
         {
             "key": "MAC_DICTATION"
@@ -16,7 +16,10 @@
             "key": "MAC_DND"
         },
         {
-            "key": "MAC_GLOBE_FN"
+            "key": "MAC_FN_GLOBE"
+        },
+        {
+            "key": "MAC_FN_QMK_FN"
         },
         {
             "key": "MAC_SCRNSHOT"
