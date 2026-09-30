@@ -959,6 +959,12 @@ __attribute__((weak)) void register_code(uint8_t code) {
     } else if (code == KC_APPLE_FN) {
         keyboard_report->reserved = 1;
         send_6kro_report();
+#ifdef EXTRAKEY_ENABLE
+    } else if (code == KC_DICTATION) {
+        host_consumer_send(0xC3);
+    } else if (code == KC_DO_NOT_DISTURB) {
+        host_system_send(0x9B);
+#endif
     } else if (IS_BASIC_KEYCODE(code)) {
         // TODO: should push command_proc out of this block?
         if (command_proc(code)) return;
@@ -1029,6 +1035,12 @@ __attribute__((weak)) void unregister_code(uint8_t code) {
     } else if (code == KC_APPLE_FN) {
         keyboard_report->reserved = 0;
         send_6kro_report();
+#ifdef EXTRAKEY_ENABLE
+    } else if (code == KC_DICTATION) {
+        host_consumer_send(0);
+    } else if (code == KC_DO_NOT_DISTURB) {
+        host_system_send(0);
+#endif
     } else if (IS_BASIC_KEYCODE(code)) {
         del_key(code);
         send_keyboard_report();
