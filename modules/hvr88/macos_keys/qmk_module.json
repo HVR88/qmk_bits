@@ -4,10 +4,10 @@
     "license": "GPL-2.0-or-later",
     "keycodes": [
         {
-            "key": "MAC_GLOBE"
+            "key": "MAC_KEY_GLOBE"
         },
         {
-            "key": "MAC_FN_KEY"
+            "key": "MAC_KEY_FN"
         },
         {
             "key": "MAC_DICTATION"

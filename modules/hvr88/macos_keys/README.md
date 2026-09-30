@@ -4,8 +4,8 @@ Reusable QMK Community Module for macOS-specific keyboard actions.
 
 ## Keycodes
 
-- `MAC_GLOBE` — native Globe
-- `MAC_FN_KEY` — native Apple Fn
+- `MAC_KEY_GLOBE` — native Globe
+- `MAC_KEY_FN` — native Apple Fn
 - `MAC_FN_GLOBE` — firmware hybrid: tap for Globe, hold or chord for native Apple Fn (see below)
 - `MAC_FN_QMK_FN` — native Apple Fn plus a QMK Fn layer (see below)
 - `MAC_DICTATION` — Apple Dictation
@@ -25,7 +25,7 @@ Screenshot and Siri actions self-cancel with Escape when the same action is issu
 
 Native Apple Fn is the vendor-defined HID usage `KC_APPLE_FN`. macOS only gives it native behavior for Apple-recognized VID/PIDs. The module offers three ways to use it.
 
-### `MAC_FN_KEY`
+### `MAC_KEY_FN`
 
 Native Apple Fn and nothing else. Press registers `KC_APPLE_FN`, release unregisters it. There is no QMK layer and no firmware Globe; standalone Fn behavior (Emoji, input source, Dictation, …) and Fn chords are left to macOS.
 
@@ -59,7 +59,7 @@ While `MAC_FN_GLOBE` or `MAC_FN_QMK_FN` is held:
 - `MAC_SCRNSHOT_AREA` sends Control-Shift-Command-4 (area to clipboard) instead. It self-cancels as the clipboard variant, separately from the plain screenshot.
 - Screenshot and Siri chords are sent without Apple Fn. If Apple Fn is down, it is released while the chord's modifiers are held and before the chord's key, so the chord never carries Fn and macOS never sees a bare Fn press and release (which it treats as a Globe press).
 
-`MAC_FN_KEY` is raw Apple Fn and is not changed by firmware chords.
+`MAC_KEY_FN` is raw Apple Fn and is not changed by firmware chords.
 
 ## Core dependency
 

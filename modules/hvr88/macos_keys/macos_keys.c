@@ -9,7 +9,7 @@ ASSERT_COMMUNITY_MODULES_MIN_API_VERSION(1, 0, 0);
 
 #define MACOS_KEYS_SELF_CANCEL_TIMEOUT 2000
 
-// Apple Fn is a single HID bit shared by MAC_FN_KEY, MAC_FN_GLOBE and MAC_FN_QMK_FN.
+// Apple Fn is a single HID bit shared by MAC_KEY_FN, MAC_FN_GLOBE and MAC_FN_QMK_FN.
 // It is registered when the first owner takes it and unregistered when the last lets go.
 enum {
     MAC_FN_OWNER_KEY    = 1 << 0,
@@ -26,7 +26,7 @@ typedef enum {
 } mac_fn_state_t;
 
 static uint8_t        mac_apple_fn_owners;
-static uint8_t        mac_fn_key_held;
+static uint8_t        mac_key_fn_held;
 static mac_fn_state_t mac_fn_state = MAC_FN_IDLE;
 static uint8_t        mac_fn_globe_keys_held;
 static uint16_t       mac_fn_globe_timer;
@@ -75,7 +75,7 @@ static bool mac_reaches_host(uint16_t keycode) {
     switch (keycode) {
         case KC_NO:
             return false;
-        case MAC_GLOBE:
+        case MAC_KEY_GLOBE:
         case MAC_DICTATION:
         case MAC_DND:
             return true;
@@ -87,7 +87,7 @@ static bool mac_reaches_host(uint16_t keycode) {
 // macOS treats an Apple Fn down/up with nothing in between as a Globe press,
 // and a chord carrying Apple Fn no longer matches its shortcut. So Apple Fn held
 // by MAC_FN_GLOBE or MAC_FN_QMK_FN is lifted while the chord's modifiers are
-// down, before the key. MAC_FN_KEY is left alone: it is raw Apple Fn.
+// down, before the key. MAC_KEY_FN is left alone: it is raw Apple Fn.
 static void mac_send_chord(uint16_t chord) {
     uint8_t mods = QK_MODS_GET_MODS(chord);
     uint8_t lift = mac_apple_fn_owners & (MAC_FN_OWNER_GLOBE | MAC_FN_OWNER_QMK_FN);
@@ -118,12 +118,12 @@ static void mac_self_cancel_action(uint16_t keycode, uint16_t chord) {
     }
 }
 
-static void mac_fn_key_press(void) {
-    if (!mac_fn_key_held++) mac_apple_fn_take(MAC_FN_OWNER_KEY);
+static void mac_key_fn_press(void) {
+    if (!mac_key_fn_held++) mac_apple_fn_take(MAC_FN_OWNER_KEY);
 }
 
-static void mac_fn_key_release(void) {
-    if (!mac_fn_key_held || --mac_fn_key_held) return;
+static void mac_key_fn_release(void) {
+    if (!mac_key_fn_held || --mac_key_fn_held) return;
     mac_apple_fn_drop(MAC_FN_OWNER_KEY);
 }
 
@@ -193,8 +193,8 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
     bool pressed = record->event.pressed;
 
     switch (keycode) {
-        case MAC_FN_KEY:
-            if (pressed) mac_fn_key_press(); else mac_fn_key_release();
+        case MAC_KEY_FN:
+            if (pressed) mac_key_fn_press(); else mac_key_fn_release();
             return false;
 
         case MAC_FN_GLOBE:
@@ -224,7 +224,7 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
-        case MAC_GLOBE:
+        case MAC_KEY_GLOBE:
             if (pressed) tap_code16(KC_GLOBE);
             return false;
 
