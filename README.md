@@ -9,11 +9,13 @@ See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98
 >#### They're enabled by macOS only for specific Apple VID/PID combinations recognized during USB enumeration.
 
 
-#### Two Hard Requirements:
+### The Two Hard Requirements:
 * **Apple VID 0x05AC and a compatible PID (examples: 0x021D or 0x0320 or ...)**
 * **Apple Fn in QMK: Must be `FF/03`, not Globe**
 
 ---
+### The Details:
+
 #### When implementing an Apple-style **Fn** key in QMK, the accurate HID usage is:
     Usage Page: 0xFF   (AppleVendorTopCase)
     Usage:      0x03   (KeyboardFn)
@@ -23,7 +25,7 @@ See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98
 
 This is distinct/different from the **Globe** key.
 
-(Some) Modern Apple keyboards label the physical key `fn` / 🌐, which can make it tempting to treat Globe and Fn as interchangeable - _they're not_. At the HID level, Apple's Fn processing only recognizes `FF/03` as the real Apple Fn key.
+(Some) Modern Apple keyboards label the physical key `fn` / 🌐, which can make it tempting to treat Globe and Fn as interchangeable - _they're not_. At the HID level, Apple's Fn processing only recognizes `FF/03` as the real Apple Fn key for Apple keyboards, while Globe is a standard usage code accepted for third-party keyboards
 
 ### Why this matters
 
@@ -54,12 +56,12 @@ With a keyboard configuration that macOS recognizes through an appropriate Apple
 
 **An Apple VID/PID is required for native Fn behavior - there's no way around it.**
 
-On a generic VID/PID, macOS does not provide the Apple FnKeyboardUsageMap / FnFunctionUsageMap. With Apple VID/PID, macOS applies an appropriate Apple keyboard personality and supplies those mappings and `FF/03` functions as the native Fn modifier.
+On a generic VID/PID, macOS does not provide the Apple FnKeyboardUsageMap / FnFunctionUsageMap. With Apple VID/PID, macOS applies an appropriate Apple keyboard personality and supplies the mappings to enable the Fn modifier.
 
-### So there are two separate requirements:
+### Requirements Summary:
 
-1. **Fn key representation:** `AppleVendorTopCase / KeyboardFn` (`FF/03`) - this can be controlled in keyboard firmware
-2. **macOS keyboard configuration:** a driver/personality that supplies Apple's Fn mappings - this can only be controlled by system software
+1. **Fn key representation:** `AppleVendorTopCase / KeyboardFn` (`FF/03`) - _this can be controlled in keyboard firmware_
+2. **macOS keyboard configuration:** a driver/personality that supplies Apple's Fn mappings - _this can only be controlled by system software_
 
 ---
 
