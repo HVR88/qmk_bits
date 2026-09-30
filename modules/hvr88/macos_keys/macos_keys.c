@@ -3,14 +3,9 @@
 
 ASSERT_COMMUNITY_MODULES_MIN_API_VERSION(1, 0, 0);
 
-typedef enum {
-    MAC_FN_IDLE,
-    MAC_FN_PENDING,
-    MAC_FN_NATIVE,
-    MAC_FN_CONSUMED,
-} mac_fn_state_t;
-
-static mac_fn_state_t mac_fn_state = MAC_FN_IDLE;
+static uint16_t mac_globe_fn_timer;
+static bool mac_globe_fn_pressed;
+static bool mac_apple_fn_active;
 static uint16_t mac_last_action_keycode;
 static uint16_t mac_last_action_timer;
 
@@ -30,12 +25,12 @@ static bool process_self_cancel_action(uint16_t keycode, uint16_t action) {
 }
 
 bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed &&
-        mac_fn_state == MAC_FN_PENDING &&
+    if (mac_globe_fn_pressed &&
+        record->event.pressed &&
         keycode != MAC_GLOBE_FN &&
-        keycode != MAC_SCRNSHOT_AREA) {
+        !mac_apple_fn_active) {
         register_code16(KC_APPLE_FN);
-        mac_fn_state = MAC_FN_NATIVE;
+        mac_apple_fn_active = true;
     }
 
     switch (keycode) {
@@ -61,7 +56,9 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
 
         case MAC_GLOBE_FN:
             if (record->event.pressed) {
-                mac_fn_state = MAC_FN_PENDING;
+                mac_globe_fn_timer = timer_read();
+                mac_globe_fn_pressed = true;
+                mac_apple_fn_active = false;
 #ifdef MACOS_KEYS_FN_LAYER
                 layer_on(MACOS_KEYS_FN_LAYER);
 #endif
@@ -69,12 +66,14 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
 #ifdef MACOS_KEYS_FN_LAYER
                 layer_off(MACOS_KEYS_FN_LAYER);
 #endif
-                if (mac_fn_state == MAC_FN_NATIVE) {
+                mac_globe_fn_pressed = false;
+
+                if (mac_apple_fn_active) {
                     unregister_code16(KC_APPLE_FN);
-                } else if (mac_fn_state == MAC_FN_PENDING) {
+                    mac_apple_fn_active = false;
+                } else {
                     tap_code16(KC_GLOBE);
                 }
-                mac_fn_state = MAC_FN_IDLE;
             }
             return false;
 
@@ -85,16 +84,7 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) return process_self_cancel_action(keycode, C(SCMD(KC_3)));
             return false;
         case MAC_SCRNSHOT_AREA:
-            if (record->event.pressed) {
-                if (mac_fn_state != MAC_FN_IDLE) {
-                    if (mac_fn_state == MAC_FN_NATIVE) {
-                        unregister_code16(KC_APPLE_FN);
-                    }
-                    mac_fn_state = MAC_FN_CONSUMED;
-                    return process_self_cancel_action(MAC_SCRNSHOT_AREA_CB, C(SCMD(KC_4)));
-                }
-                return process_self_cancel_action(MAC_SCRNSHOT_AREA, SCMD(KC_4));
-            }
+            if (record->event.pressed) return process_self_cancel_action(keycode, SCMD(KC_4));
             return false;
         case MAC_SCRNSHOT_AREA_CB:
             if (record->event.pressed) return process_self_cancel_action(keycode, C(SCMD(KC_4)));
@@ -122,4 +112,10 @@ void housekeeping_task_macos_keys(void) {
         mac_last_action_keycode = 0;
     }
 
+    if (mac_globe_fn_pressed &&
+        !mac_apple_fn_active &&
+        timer_elapsed(mac_globe_fn_timer) >= TAPPING_TERM) {
+        register_code16(KC_APPLE_FN);
+        mac_apple_fn_active = true;
+    }
 }
