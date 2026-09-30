@@ -1,0 +1,71 @@
+---
+description: Bump HVR88_VERSION on code changes to qmk_bits
+alwaysApply: true
+---
+
+# Bump HVR88 version on code changes
+
+Whenever you make a **code** change in this repository (`qmk_bits`), bump the HVR88 firmware version before finishing the task (and include the bump in the same commit when committing).
+
+## What counts as a code change
+
+Bump for changes to anything that affects the built firmware or how it is produced/applied, including:
+
+- `keyboards/`, `modules/`
+- `patches/`
+- `build_flash.sh` (and similar build/flash scripts)
+
+## What does **not** bump
+
+- Docs / README only (except when the bump itself updates `VERSION_HISTORY.md`)
+- Cursor rules (`.cursor/`)
+- `.gitignore` alone
+- Comments-only edits with no behavior or build-output change
+- Read-only inspection
+
+If a commit mixes code and docs, still bump once.
+
+## How to bump
+
+Update **both** of these files together:
+
+### 1. `keyboards/hvr88/keychron_q3/hvr88_version.h`
+
+```c
+#define HVR88_VERSION "X.Y.Z"
+#define HVR88_VERSION_DATE "YYYY-MM-DD"
+```
+
+Each of `X`, `Y`, and `Z` is an integer **0–99**.
+
+Default: increment **patch** (`Z`) by 1:
+
+- `1.0.8` → `1.0.9`
+- `1.0.99` → `1.1.0`
+- `1.99.99` → `2.0.0`
+
+Set **`HVR88_VERSION_DATE`** to today’s date in **ISO-8601** (`YYYY-MM-DD`).
+
+### 2. `keyboards/hvr88/keychron_q3/VERSION_HISTORY.md`
+
+**Append** a new line at the end (never rewrite or delete older lines):
+
+```text
+X.Y.Z  YYYY-MM-DD
+```
+
+Same version and date as in `hvr88_version.h`. This file is the durable lookup table for “when was version N made?”
+
+Do **not** jump minor/major early. Do **not** use three-digit components. Do **not** leave the header or history file stale relative to each other.
+
+## Looking up a past version’s date
+
+- **By version number** (e.g. `1.0.23`): open `VERSION_HISTORY.md` and find that line, or  
+  `grep '^1.0.23 ' keyboards/hvr88/keychron_q3/VERSION_HISTORY.md`
+- **By sequence** (“the 23rd version”): the Nth data line in `VERSION_HISTORY.md` (skip the header/blank lines; first version entry is line with `1.0.8` today)
+- **Current only:** `HVR88_VERSION` / `HVR88_VERSION_DATE` in `hvr88_version.h`
+
+## When
+
+- One bump per unit of work / commit that includes code changes — not once per file.
+- Do **not** bump when the session only reads/inspects the repo with no code writes.

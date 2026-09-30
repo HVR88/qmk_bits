@@ -1,3 +1,4 @@
 #pragma once
 
-#define HVR88_VERSION "0.1.0"
+#define HVR88_VERSION "1.0.8"
+#define HVR88_VERSION_DATE "2026-09-30"
