@@ -32,8 +32,8 @@ enum custom_keycodes {
     MAC_SCRNSHOT_CB,
     MAC_SCRNSHOT_AREA,
     MAC_SCRNSHOT_AREA_CB,
-    MAC_SCRNSHOT_OPTIONS,
-    MAC_SCRNSHOT_OPTIONS_CB,
+    MAC_SCRNSHOT_OPT,
+    MAC_SCRNSHOT_OPT_CB,
     MAC_ASKSIRI_AREA,
     MAC_SIRI_WINDOW,
 };
@@ -159,8 +159,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case MAC_SCRNSHOT_CB:
         case MAC_SCRNSHOT_AREA:
         case MAC_SCRNSHOT_AREA_CB:
-        case MAC_SCRNSHOT_OPTIONS:
-        case MAC_SCRNSHOT_OPTIONS_CB:
+        case MAC_SCRNSHOT_OPT:
+        case MAC_SCRNSHOT_OPT_CB:
             if (record->event.pressed) {
                 if (mac_last_screenshot_keycode == keycode) {
                     tap_code(KC_ESC);
@@ -179,10 +179,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         case MAC_SCRNSHOT_AREA_CB:
                             tap_code16(C(SCMD(KC_4)));
                             break;
-                        case MAC_SCRNSHOT_OPTIONS:
+                        case MAC_SCRNSHOT_OPT:
                             tap_code16(SCMD(KC_5));
                             break;
-                        case MAC_SCRNSHOT_OPTIONS_CB:
+                        case MAC_SCRNSHOT_OPT_CB:
                             tap_code16(C(SCMD(KC_5)));
                             break;
                     }
