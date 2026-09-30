@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include "hvr88_version.h"
+#include "serial_number.h"
+
 /* RGB Matrix Driver Configuration */
 #define SNLED27351_I2C_ADDRESS_1 SNLED27351_I2C_ADDRESS_VDDIO
 #define SNLED27351_I2C_ADDRESS_2 SNLED27351_I2C_ADDRESS_GND
