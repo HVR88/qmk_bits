@@ -29,11 +29,11 @@ enum layers{
 enum custom_keycodes {
     MAC_GLOBE_FN = SAFE_RANGE,
     MAC_SS_SCREEN,
-    MAC_SS_SCREEN_CLIP,
+    MAC_SS_SCREEN_CB,
     MAC_SS_AREA,
-    MAC_SS_AREA_CLIP,
+    MAC_SS_AREA_CB,
     MAC_SS_OPTIONS,
-    MAC_SS_OPTIONS_CLIP,
+    MAC_SS_OPTIONS_CB,
     MAC_SIRI_AREA,
     MAC_SIRI_WINDOW,
 };
@@ -156,11 +156,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return process_tap_or_long_press_key(record, KC_PWR);
 
         case MAC_SS_SCREEN:
-        case MAC_SS_SCREEN_CLIP:
+        case MAC_SS_SCREEN_CB:
         case MAC_SS_AREA:
-        case MAC_SS_AREA_CLIP:
+        case MAC_SS_AREA_CB:
         case MAC_SS_OPTIONS:
-        case MAC_SS_OPTIONS_CLIP:
+        case MAC_SS_OPTIONS_CB:
             if (record->event.pressed) {
                 if (mac_last_screenshot_keycode == keycode) {
                     tap_code(KC_ESC);
@@ -170,19 +170,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                         case MAC_SS_SCREEN:
                             tap_code16(SCMD(KC_3));
                             break;
-                        case MAC_SS_SCREEN_CLIP:
+                        case MAC_SS_SCREEN_CB:
                             tap_code16(C(SCMD(KC_3)));
                             break;
                         case MAC_SS_AREA:
                             tap_code16(SCMD(KC_4));
                             break;
-                        case MAC_SS_AREA_CLIP:
+                        case MAC_SS_AREA_CB:
                             tap_code16(C(SCMD(KC_4)));
                             break;
                         case MAC_SS_OPTIONS:
                             tap_code16(SCMD(KC_5));
                             break;
-                        case MAC_SS_OPTIONS_CLIP:
+                        case MAC_SS_OPTIONS_CB:
                             tap_code16(C(SCMD(KC_5)));
                             break;
                     }
