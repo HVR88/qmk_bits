@@ -30,7 +30,7 @@ index 9be3fbe34482820051feef6d9fd726a7c41252b7..375e47df51d43ea38b5eaf82d08f49aa
 +        send_6kro_report();
 +#ifdef EXTRAKEY_ENABLE
 +    } else if (code == KC_DICTATION) {
-+        host_consumer_send(0xC3);
++        host_consumer_send(0xCF);
 +    } else if (code == KC_DO_NOT_DISTURB) {
 +        host_system_send(0x9B);
 +#endif
