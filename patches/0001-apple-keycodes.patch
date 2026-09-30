@@ -1,0 +1,115 @@
+diff --git a/data/constants/keycodes/keycodes_0.0.2_basic.hjson b/data/constants/keycodes/keycodes_0.0.2_basic.hjson
+index 0e9338101e071f1a6b4b593f917ab62f28ef22a2..a96e221f8b70aad355911331d5de02ffc2842c8d 100644
+--- a/data/constants/keycodes/keycodes_0.0.2_basic.hjson
++++ b/data/constants/keycodes/keycodes_0.0.2_basic.hjson
+@@ -15,6 +15,14 @@
+             "aliases": [
+                 "KC_LPAD"
+             ]
++        },
++        "0x00C3": {
++            "group": "media",
++            "key": "KC_GLOBE",
++            "label": "Apple Globe/Fn Key",
++            "aliases": [
++                "KC_GLB"
++            ]
+         }
+     }
+ }
+diff --git a/quantum/action.c b/quantum/action.c
+index 9be3fbe34482820051feef6d9fd726a7c41252b7..375e47df51d43ea38b5eaf82d08f49aaa28f232b 100644
+--- a/quantum/action.c
++++ b/quantum/action.c
+@@ -956,6 +956,15 @@ __attribute__((weak)) void register_code(uint8_t code) {
+         send_keyboard_report();
+ #endif
+ 
++    } else if (code == KC_APPLE_FN) {
++        keyboard_report->reserved = 1;
++        send_6kro_report();
++#ifdef EXTRAKEY_ENABLE
++    } else if (code == KC_DICTATION) {
++        host_consumer_send(0xC3);
++    } else if (code == KC_DO_NOT_DISTURB) {
++        host_system_send(0x9B);
++#endif
+     } else if (IS_BASIC_KEYCODE(code)) {
+         // TODO: should push command_proc out of this block?
+         if (command_proc(code)) return;
+@@ -1023,6 +1032,15 @@ __attribute__((weak)) void unregister_code(uint8_t code) {
+         send_keyboard_report();
+ #endif
+ 
++    } else if (code == KC_APPLE_FN) {
++        keyboard_report->reserved = 0;
++        send_6kro_report();
++#ifdef EXTRAKEY_ENABLE
++    } else if (code == KC_DICTATION) {
++        host_consumer_send(0);
++    } else if (code == KC_DO_NOT_DISTURB) {
++        host_system_send(0);
++#endif
+     } else if (IS_BASIC_KEYCODE(code)) {
+         del_key(code);
+         send_keyboard_report();
+diff --git a/quantum/keycodes.h b/quantum/keycodes.h
+index 931e195ca189baa266699b43d8f5d080d10a5945..7d52f0b917504ac7e5fb01a0e3794b3aaba1fa10 100644
+--- a/quantum/keycodes.h
++++ b/quantum/keycodes.h
+@@ -295,6 +295,10 @@ enum qk_keycode_defines {
+     KC_ASSISTANT = 0x00C0,
+     KC_MISSION_CONTROL = 0x00C1,
+     KC_LAUNCHPAD = 0x00C2,
++    KC_GLOBE = 0x00C3,
++    KC_APPLE_FN = 0x00C4,
++    KC_DICTATION = 0x00C5,
++    KC_DO_NOT_DISTURB = 0x00C6,
+     QK_MOUSE_CURSOR_UP = 0x00CD,
+     QK_MOUSE_CURSOR_DOWN = 0x00CE,
+     QK_MOUSE_CURSOR_LEFT = 0x00CF,
+@@ -1034,6 +1038,10 @@ enum qk_keycode_defines {
+     KC_ASST    = KC_ASSISTANT,
+     KC_MCTL    = KC_MISSION_CONTROL,
+     KC_LPAD    = KC_LAUNCHPAD,
++    KC_GLB     = KC_GLOBE,
++    KC_APFN    = KC_APPLE_FN,
++    KC_DICT    = KC_DICTATION,
++    KC_DND     = KC_DO_NOT_DISTURB,
+     MS_UP      = QK_MOUSE_CURSOR_UP,
+     MS_DOWN    = QK_MOUSE_CURSOR_DOWN,
+     MS_LEFT    = QK_MOUSE_CURSOR_LEFT,
+@@ -1672,7 +1680,7 @@ enum qk_keycode_defines {
+ #define IS_INTERNAL_KEYCODE(code) ((code) >= KC_NO && (code) <= KC_TRANSPARENT)
+ #define IS_BASIC_KEYCODE(code) ((code) >= KC_A && (code) <= KC_EXSEL)
+ #define IS_SYSTEM_KEYCODE(code) ((code) >= KC_SYSTEM_POWER && (code) <= KC_SYSTEM_WAKE)
+-#define IS_CONSUMER_KEYCODE(code) ((code) >= KC_AUDIO_MUTE && (code) <= KC_LAUNCHPAD)
++#define IS_CONSUMER_KEYCODE(code) ((code) >= KC_AUDIO_MUTE && (code) <= KC_GLOBE)
+ #define IS_MOUSE_KEYCODE(code) ((code) >= QK_MOUSE_CURSOR_UP && (code) <= QK_MOUSE_ACCELERATION_2)
+ #define IS_MODIFIER_KEYCODE(code) ((code) >= KC_LEFT_CTRL && (code) <= KC_RIGHT_GUI)
+ #define IS_SWAP_HANDS_KEYCODE(code) ((code) >= QK_SWAP_HANDS_TOGGLE && (code) <= QK_SWAP_HANDS_ONE_SHOT)
+@@ -1696,9 +1704,9 @@ enum qk_keycode_defines {
+ 
+ // Switch statement Helpers
+ #define INTERNAL_KEYCODE_RANGE              KC_NO ... KC_TRANSPARENT
+-#define BASIC_KEYCODE_RANGE                 KC_A ... KC_EXSEL
++#define BASIC_KEYCODE_RANGE                 KC_A ... KC_EXSEL: case KC_APPLE_FN ... KC_DO_NOT_DISTURB
+ #define SYSTEM_KEYCODE_RANGE                KC_SYSTEM_POWER ... KC_SYSTEM_WAKE
+-#define CONSUMER_KEYCODE_RANGE              KC_AUDIO_MUTE ... KC_LAUNCHPAD
++#define CONSUMER_KEYCODE_RANGE              KC_AUDIO_MUTE ... KC_GLOBE
+ #define MOUSE_KEYCODE_RANGE                 QK_MOUSE_CURSOR_UP ... QK_MOUSE_ACCELERATION_2
+ #define MODIFIER_KEYCODE_RANGE              KC_LEFT_CTRL ... KC_RIGHT_GUI
+ #define SWAP_HANDS_KEYCODE_RANGE            QK_SWAP_HANDS_TOGGLE ... QK_SWAP_HANDS_ONE_SHOT
+diff --git a/tmk_core/protocol/report.h b/tmk_core/protocol/report.h
+index 805f8a917455f98763099c81db901d47e6639542..24314507df31ad7d5d8fd15be9d212aaa2a07699 100644
+--- a/tmk_core/protocol/report.h
++++ b/tmk_core/protocol/report.h
+@@ -345,6 +345,8 @@ static inline uint16_t KEYCODE2CONSUMER(uint8_t key) {
+             return AC_DESKTOP_SHOW_ALL_WINDOWS;
+         case KC_LAUNCHPAD:
+             return AC_SOFT_KEY_LEFT;
++        case KC_GLOBE:
++            return AC_NEXT_KEYBOARD_LAYOUT_SELECT;
+         default:
+             return 0;
+     }

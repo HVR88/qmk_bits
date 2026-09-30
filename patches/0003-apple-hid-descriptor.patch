@@ -1,0 +1,61 @@
+diff --git a/tmk_core/protocol/chibios/usb_report_handling.c b/tmk_core/protocol/chibios/usb_report_handling.c
+index 64074b21642fd7725100f6ee8b769627a4ffd68d..1d5172f6ea950f28317822e7925f70e0318a9b47 100644
+--- a/tmk_core/protocol/chibios/usb_report_handling.c
++++ b/tmk_core/protocol/chibios/usb_report_handling.c
+@@ -81,6 +81,17 @@ bool usb_get_report_cb(USBDriver *driver) {
+     usb_control_request_t *setup     = (usb_control_request_t *)driver->setup;
+     uint8_t                interface = setup->wIndex;
+     uint8_t                report_id = setup->wValue.lbyte;
++    uint8_t                report_type = setup->wValue.hbyte;
++
++    // HID Get_Report type 3 = Feature.  Expose Consumer-page
++    // Keyboard Physical Layout (0x02C3) as value 1 (101-key / ANSI).
++    if (interface == KEYBOARD_INTERFACE &&
++        report_type == 0x03 &&
++        report_id == 0x00) {
++        static uint8_t _Alignas(4) keyboard_layout_report = 0x01;
++        usbSetupTransfer(driver, &keyboard_layout_report, sizeof(keyboard_layout_report), NULL);
++        return true;
++    }
+ 
+     static usb_fs_report_t report;
+ 
+diff --git a/tmk_core/protocol/usb_descriptor.c b/tmk_core/protocol/usb_descriptor.c
+index f83f3c6b6601b5594a7561740d492f44c3702d59..ae50ebd0be77fc2303b8dfba720191dbff68548e 100644
+--- a/tmk_core/protocol/usb_descriptor.c
++++ b/tmk_core/protocol/usb_descriptor.c
+@@ -86,10 +86,14 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM KeyboardReport[] = {
+         HID_RI_REPORT_COUNT(8, 0x08),
+         HID_RI_REPORT_SIZE(8, 0x01),
+         HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+-        // Reserved (1 byte)
++        // Apple Fn modifier (Apple Vendor Top Case, usage 0x03)
++        HID_RI_USAGE_PAGE(8, 0xFF),
++        HID_RI_USAGE(8, 0x03),
++        HID_RI_LOGICAL_MINIMUM(8, 0x00),
++        HID_RI_LOGICAL_MAXIMUM(8, 0x01),
+         HID_RI_REPORT_COUNT(8, 0x01),
+         HID_RI_REPORT_SIZE(8, 0x08),
+-        HID_RI_INPUT(8, HID_IOF_CONSTANT),
++        HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+         // Keycodes (6 bytes)
+         HID_RI_USAGE_PAGE(8, 0x07),    // Keyboard/Keypad
+         HID_RI_USAGE_MINIMUM(8, 0x00),
+@@ -113,6 +117,17 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM KeyboardReport[] = {
+         HID_RI_REPORT_COUNT(8, 0x01),
+         HID_RI_REPORT_SIZE(8, 0x03),
+         HID_RI_OUTPUT(8, HID_IOF_CONSTANT),
++
++        // Keyboard Physical Layout feature (Consumer 0x02C3).
++        // Value 1 = 101-key / ANSI. Keep this report unnumbered so the
++        // existing keyboard input report remains an ordinary boot-style report.
++        HID_RI_USAGE_PAGE(8, 0x0C),
++        HID_RI_USAGE(16, 0x02C3),
++        HID_RI_LOGICAL_MINIMUM(8, 0x01),
++        HID_RI_LOGICAL_MAXIMUM(8, 0x05),
++        HID_RI_REPORT_COUNT(8, 0x01),
++        HID_RI_REPORT_SIZE(8, 0x08),
++        HID_RI_FEATURE(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+     HID_RI_END_COLLECTION(0),
+ #ifndef KEYBOARD_SHARED_EP
+ };

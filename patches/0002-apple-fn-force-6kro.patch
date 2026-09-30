@@ -1,0 +1,47 @@
+diff --git a/quantum/action_util.c b/quantum/action_util.c
+index 00cec24e3f0f3963ef6aca9050a9a1805ade8824..301fee0492a3a9e7b4c030db84b34603bf3b825f 100644
+--- a/quantum/action_util.c
++++ b/quantum/action_util.c
+@@ -334,7 +334,7 @@ void send_nkro_report(void) {
+  */
+ void send_keyboard_report(void) {
+ #ifdef NKRO_ENABLE
+-    if (host_can_send_nkro() && keymap_config.nkro) {
++    if (!keyboard_report->reserved && host_can_send_nkro() && keymap_config.nkro) {
+         send_nkro_report();
+         return;
+     }
+diff --git a/quantum/action_util.h b/quantum/action_util.h
+index f3178bba6e9607430ba38328ac87d98d1b65efca..567067b4135ad764e205544d391c32756ef3bd5c 100644
+--- a/quantum/action_util.h
++++ b/quantum/action_util.h
+@@ -48,6 +48,7 @@ extern report_nkro_t *nkro_report;
+ #endif
+ 
+ void send_keyboard_report(void);
++void send_6kro_report(void);
+ 
+ /* key */
+ inline void add_key(uint8_t key) {
+diff --git a/tmk_core/protocol/report.c b/tmk_core/protocol/report.c
+index 8cae256cc6ed928d15ffb4fcce67e2d52d16e261..ffdd83d806e3d995fa37d02e949b34186cae5b37 100644
+--- a/tmk_core/protocol/report.c
++++ b/tmk_core/protocol/report.c
+@@ -151,7 +151,7 @@ void del_key_bit(report_nkro_t* nkro_report, uint8_t code) {
+  */
+ void add_key_to_report(uint8_t key) {
+ #ifdef NKRO_ENABLE
+-    if (host_can_send_nkro() && keymap_config.nkro) {
++    if (!keyboard_report->reserved && host_can_send_nkro() && keymap_config.nkro) {
+         add_key_bit(nkro_report, key);
+         return;
+     }
+@@ -165,7 +165,7 @@ void add_key_to_report(uint8_t key) {
+  */
+ void del_key_from_report(uint8_t key) {
+ #ifdef NKRO_ENABLE
+-    if (host_can_send_nkro() && keymap_config.nkro) {
++    if (!keyboard_report->reserved && host_can_send_nkro() && keymap_config.nkro) {
+         del_key_bit(nkro_report, key);
+         return;
+     }

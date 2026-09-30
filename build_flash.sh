@@ -62,27 +62,36 @@ EOF
 }
 
 copy() {
-    echo "==> Copying keyboard, modules, data, and core overlays"
+    echo "==> Copying keyboard and modules"
     mkdir -p "$QMK/keyboards/hvr88"
     cp -R "$BITS/keyboards/hvr88/." "$QMK/keyboards/hvr88/"
     mkdir -p "$QMK/modules"
     cp -R "$BITS/modules/." "$QMK/modules/"
-    mkdir -p "$QMK/data/constants/keycodes"
-    cp "$BITS/data/constants/keycodes/"*.hjson "$QMK/data/constants/keycodes/"
-    cp "$BITS/quantum/action.c" "$QMK/quantum/action.c"
-    cp "$BITS/quantum/action_util.h" "$QMK/quantum/action_util.h"
-    cp "$BITS/quantum/action_util.c" "$QMK/quantum/action_util.c"
-    cp "$BITS/quantum/keycodes.h" "$QMK/quantum/keycodes.h"
-    cp "$BITS/tmk_core/protocol/report.h" "$QMK/tmk_core/protocol/report.h"
-    cp "$BITS/tmk_core/protocol/report.c" "$QMK/tmk_core/protocol/report.c"
-    cp "$BITS/tmk_core/protocol/usb_descriptor.c" "$QMK/tmk_core/protocol/usb_descriptor.c"
-    cp "$BITS/tmk_core/protocol/chibios/usb_report_handling.c" "$QMK/tmk_core/protocol/chibios/usb_report_handling.c"
+}
+
+# Restore the core to the checked-out release, then apply our patches.
+# --3way needs full clone history (no --depth) to merge around upstream edits.
+apply_patches() {
+    local p
+
+    echo "==> Resetting core to $(git -C "$QMK" describe --tags --always)"
+    git -C "$QMK" checkout HEAD -- quantum tmk_core data
+
+    for p in "$BITS"/patches/*.patch; do
+        echo "==> Applying $(basename "$p")"
+        if ! git -C "$QMK" apply --3way "$p"; then
+            echo "ERROR: $(basename "$p") no longer applies cleanly to $(git -C "$QMK" describe --tags --always)"
+            echo "Resolve the conflicts in $QMK, then regenerate the patch."
+            exit 1
+        fi
+    done
 }
 
 compile() {
     echo "==> Compiling"
     write_serial_number
     copy
+    apply_patches
     cd "$QMK"
     qmk config user.keyboard="$KEYBOARD"
     qmk compile -kb "$KEYBOARD" -km "$KEYMAP"
