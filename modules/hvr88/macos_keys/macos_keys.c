@@ -29,6 +29,26 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
     }
 
     switch (keycode) {
+        case MAC_GLOBE:
+            if (record->event.pressed) tap_code16(KC_GLOBE);
+            return false;
+
+        case MAC_APPLE_FN:
+            if (record->event.pressed) {
+                register_code16(KC_APPLE_FN);
+            } else {
+                unregister_code16(KC_APPLE_FN);
+            }
+            return false;
+
+        case MAC_DICTATION:
+            if (record->event.pressed) tap_code16(KC_DICTATION);
+            return false;
+
+        case MAC_DND:
+            if (record->event.pressed) tap_code16(KC_DO_NOT_DISTURB);
+            return false;
+
         case MAC_GLOBE_FN:
             if (record->event.pressed) {
                 mac_globe_fn_timer = timer_read();
