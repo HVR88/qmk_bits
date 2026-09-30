@@ -7,14 +7,19 @@ static uint16_t mac_globe_fn_timer;
 static bool mac_globe_fn_pressed;
 static bool mac_apple_fn_active;
 static uint16_t mac_last_action_keycode;
+static uint16_t mac_last_action_timer;
+
+#define MACOS_KEYS_SELF_CANCEL_TIMEOUT 4000
 
 static bool process_self_cancel_action(uint16_t keycode, uint16_t action) {
-    if (mac_last_action_keycode == keycode) {
+    if (mac_last_action_keycode == keycode &&
+        timer_elapsed(mac_last_action_timer) < MACOS_KEYS_SELF_CANCEL_TIMEOUT) {
         tap_code(KC_ESC);
         mac_last_action_keycode = 0;
     } else {
         tap_code16(action);
         mac_last_action_keycode = keycode;
+        mac_last_action_timer = timer_read();
     }
     return false;
 }
@@ -102,6 +107,11 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
 }
 
 void housekeeping_task_macos_keys(void) {
+    if (mac_last_action_keycode &&
+        timer_elapsed(mac_last_action_timer) >= MACOS_KEYS_SELF_CANCEL_TIMEOUT) {
+        mac_last_action_keycode = 0;
+    }
+
     if (mac_globe_fn_pressed &&
         !mac_apple_fn_active &&
         timer_elapsed(mac_globe_fn_timer) >= TAPPING_TERM) {
