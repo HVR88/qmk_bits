@@ -28,8 +28,8 @@ enum layers{
 
 enum custom_keycodes {
     MAC_GLOBE_FN = SAFE_RANGE,
-    MAC_SCRNSHOT_SCREEN,
-    MAC_SCRNSHOT_SCREEN_CB,
+    MAC_SCRNSHOT,
+    MAC_SCRNSHOT_CB,
     MAC_SCRNSHOT_AREA,
     MAC_SCRNSHOT_AREA_CB,
     MAC_SCRNSHOT_OPTIONS,
@@ -155,8 +155,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case MUTE_PWR:
             return process_tap_or_long_press_key(record, KC_PWR);
 
-        case MAC_SCRNSHOT_SCREEN:
-        case MAC_SCRNSHOT_SCREEN_CB:
+        case MAC_SCRNSHOT:
+        case MAC_SCRNSHOT_CB:
         case MAC_SCRNSHOT_AREA:
         case MAC_SCRNSHOT_AREA_CB:
         case MAC_SCRNSHOT_OPTIONS:
@@ -167,10 +167,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     mac_last_screenshot_keycode = 0;
                 } else {
                     switch (keycode) {
-                        case MAC_SCRNSHOT_SCREEN:
+                        case MAC_SCRNSHOT:
                             tap_code16(SCMD(KC_3));
                             break;
-                        case MAC_SCRNSHOT_SCREEN_CB:
+                        case MAC_SCRNSHOT_CB:
                             tap_code16(C(SCMD(KC_3)));
                             break;
                         case MAC_SCRNSHOT_AREA:
