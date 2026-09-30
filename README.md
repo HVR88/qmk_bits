@@ -4,7 +4,7 @@
 See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98ce37414c6c4?permalink_comment_id=6397510#gistcomment-6397510
 
 
-## Requirement: Apple VID 0x05AC, PID 0x021D
+## Requirement: Apple VID 0x05AC and compatible PID (examples: 0x021D or 0x0320 or ...)
 
 ## Apple Fn in QMK: Must be `FF/03`, not Globe
 
@@ -36,11 +36,11 @@ With a keyboard configuration that macOS recognizes through an appropriate Apple
     Fn + n → Notification Center
     etc...
 
-Apple VID/PID is absolutely required and there's no way around it.
+**An Apple VID/PID is required for native Fn behavior - there's no way around it.**
 
-On a generic VID/PID, macOS may use `AppleUserHIDEventDriver`. Its `IOHIDKeyboardFilter` does not receive the Apple `FnKeyboardUsageMap` / `FnFunctionUsageMap` properties merely because the HID descriptor contains `FF/03`.
+On a generic VID/PID, macOS does not provide the Apple FnKeyboardUsageMap / FnFunctionUsageMap. With a compatible Apple VID/PID, macOS applies the appropriate Apple keyboard personality and supplies those mappings.
 
-With real Apple VID/PID, the keyboard matches an appropriate Apple keyboard personality, macOS supplies those Fn maps and `FF/03` functions as the native Fn modifier.
+With real Apple VID/PID, the keyboard matches an suitable Apple keyboard personality, macOS supplies those Fn maps and `FF/03` functions as the native Fn modifier.
 
 So there are two separate requirements:
 
