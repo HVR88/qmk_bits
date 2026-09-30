@@ -26,8 +26,20 @@ compile() {
 
 flash() {
     echo "==> Flashing"
-    cd "$QMK"
-    qmk flash -kb "$KEYBOARD" -km "$KEYMAP"
+    BIN="$QMK/hvr88_keychron_q3_ansi_encoder_hvr88.bin"
+
+    if [ ! -f "$BIN" ]; then
+        echo "ERROR: Firmware binary not found: $BIN"
+        echo "Run --compile or --all first."
+        exit 1
+    fi
+
+    echo "Waiting for STM32 DFU bootloader (Ctrl+C to cancel)..."
+    until dfu-util -l 2>/dev/null | grep -q '0483:df11'; do
+        sleep 0.5
+    done
+
+    dfu-util -a 0 -s 0x08000000:leave -D "$BIN"
 }
 
 case "${1:---all}" in
