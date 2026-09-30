@@ -192,14 +192,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
 
         case MAC_ASKSIRI_AREA:
-            if (record->event.pressed) {
-                tap_code16(S(KC_6));
-            }
-            return false;
-
         case MAC_SIRI_WINDOW:
             if (record->event.pressed) {
-                tap_code16(SCMD(KC_SPC));
+                if (mac_last_screenshot_keycode == keycode) {
+                    tap_code(KC_ESC);
+                    mac_last_screenshot_keycode = 0;
+                } else {
+                    if (keycode == MAC_ASKSIRI_AREA) {
+                        tap_code16(S(KC_6));
+                    } else {
+                        tap_code16(SCMD(KC_SPC));
+                    }
+                    mac_last_screenshot_keycode = keycode;
+                }
             }
             return false;
     }
