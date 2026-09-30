@@ -29,7 +29,7 @@ This is distinct/different from the **Globe** key.
 
 ### Why this matters
 
-With a keyboard configuration that macOS recognizes through an appropriate Apple keyboard personality, `FF/03` participates in the native Apple Fn behavior, with the mappings below. Globe does not.
+With a keyboard configuration that macOS recognizes through an appropriate Apple keyboard personality, `FF/03` participates in the native Apple Fn behavior, with the mappings below. Globe on third party keyboards does not - _except for single press opening Emoji picker._
 
 > [!NOTE]
 >
@@ -42,7 +42,7 @@ With a keyboard configuration that macOS recognizes through an appropriate Apple
 > | **Fn + Up** | Page Up |
 > | **Fn + Down** | Page Down |
 > | **Fn + Delete (Backspace)** | DEL (Forward Delete) |
-> | **Fn Single Tap** | Emoji & Symbols |
+> | **Fn Single Press** | Emoji & Symbols |
 > | **Fn + A** | Dock |
 > | **Fn + SHIFT + A** | Apps / Launchpad |
 > | **Fn + C** | Control Center |
