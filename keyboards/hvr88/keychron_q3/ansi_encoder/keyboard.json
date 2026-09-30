@@ -1,6 +1,6 @@
 {
     "usb": {
-        "pid": "0x021D",
+        "pid": "0x0320",
         "device_version": "1.0.0"
     },
     "encoder": {
