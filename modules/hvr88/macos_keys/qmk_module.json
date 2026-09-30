@@ -37,6 +37,9 @@
             "key": "MAC_SCRNSHOT_OPT_CB"
         },
         {
+            "key": "MAC_SIRI_AREA"
+        },
+        {
             "key": "MAC_SIRI_WINDOW"
         }
     ]
