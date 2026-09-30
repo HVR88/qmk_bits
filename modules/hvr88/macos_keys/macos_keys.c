@@ -10,7 +10,6 @@ typedef enum {
     MAC_FN_CONSUMED,
 } mac_fn_state_t;
 
-static uint16_t mac_globe_fn_timer;
 static mac_fn_state_t mac_fn_state = MAC_FN_IDLE;
 static uint16_t mac_last_action_keycode;
 static uint16_t mac_last_action_timer;
@@ -62,7 +61,6 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
 
         case MAC_GLOBE_FN:
             if (record->event.pressed) {
-                mac_globe_fn_timer = timer_read();
                 mac_fn_state = MAC_FN_PENDING;
 #ifdef MACOS_KEYS_FN_LAYER
                 layer_on(MACOS_KEYS_FN_LAYER);
@@ -124,9 +122,4 @@ void housekeeping_task_macos_keys(void) {
         mac_last_action_keycode = 0;
     }
 
-    if (mac_fn_state == MAC_FN_PENDING &&
-        timer_elapsed(mac_globe_fn_timer) >= TAPPING_TERM) {
-        register_code16(KC_APPLE_FN);
-        mac_fn_state = MAC_FN_NATIVE;
-    }
 }
