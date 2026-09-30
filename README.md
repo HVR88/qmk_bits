@@ -42,6 +42,7 @@ With a keyboard configuration that macOS recognizes through an appropriate Apple
 > | **Fn + Up** | Page Up |
 > | **Fn + Down** | Page Down |
 > | **Fn + Delete (Backspace)** | DEL (Forward Delete) |
+> | **Fn Single Tap** | Emoji & Symbols |
 > | **Fn + A** | Dock |
 > | **Fn + SHIFT + A** | Apps / Launchpad |
 > | **Fn + C** | Control Center |
