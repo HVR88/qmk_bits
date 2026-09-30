@@ -2,49 +2,73 @@
 # Matching Original Apple Keyboards Fully with QMK
 
 See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98ce37414c6c4?permalink_comment_id=6397510#gistcomment-6397510
+<br>
+<br>
+
+## The information and macOS behavior described are current as of macOS 27 (2026)<br>No claims are made for prior nor future macOS releases.<br><br>
+
+> [!IMPORTANT]
+>### Fn support, and other non-standard (vendor-defined) HID usages, are hard-coded into macOS.
+>#### They're enabled by macOS only for specific Apple VID/PID combinations recognized during USB enumeration.
 
 
-## Requirement: Apple VID 0x05AC, PID 0x021D
+### The Two Hard Requirements:
+* **Apple VID 0x05AC and a compatible PID (examples: 0x021D or 0x0320 or ...)**
+* **Apple Fn in QMK: Must be `FF/03`, not Globe**
 
-## Apple Fn in QMK: Must be `FF/03`, not Globe
+---
+### The Details:
 
-When implementing an Apple-style **Fn** key in QMK, the accurate HID usage is:
-
+#### When implementing an Apple-style **Fn** key in QMK, the accurate HID usage is:
     Usage Page: 0xFF   (AppleVendorTopCase)
     Usage:      0x03   (KeyboardFn)
 
-In other words:
-
+#### In other words:
     AppleVendorTopCase / KeyboardFn = FF/03
 
 This is distinct/different from the **Globe** key.
 
-(Some) Modern Apple keyboards label the physical key `fn` / 🌐, which can make it tempting to treat Globe and Fn as interchangeable - they're not. At the HID level, Apple's Fn processing only recognizes `FF/03` as the real Apple Fn key.
+(Some) Modern Apple keyboards label the physical key `fn` / 🌐, which can make it tempting to treat Globe and Fn as interchangeable - _they're not_. At the HID level, Apple's Fn processing only recognizes `FF/03` as the real Apple Fn key for Apple keyboards, while Globe is a standard usage code accepted for third-party keyboards
 
 ### Why this matters
 
-With a keyboard configuration that macOS recognizes through an appropriate Apple keyboard personality, `FF/03` participates in the native Apple Fn behavior, including mappings such as:
+With a keyboard configuration that macOS recognizes through an appropriate Apple keyboard personality, `FF/03` participates in the native Apple Fn behavior, with the mappings below. Globe on third party keyboards does not - _except for single press opening Emoji picker._
 
-    F1 to F12  → all of Apple's normal media-keys
-    Fn + F1 to F12  → Real Function Keys
+> [!NOTE]
+>
+> | Keys | Results |
+> | --- | --- |
+> | **F1 to F12** | Apple's normal media-keys (except DICTATION and DO NOT DISTURB) **\*** |
+> | **Fn + F1 to F12** | Real Function Keys |
+> | **Fn + Left** | Home |
+> | **Fn + Right** | End |
+> | **Fn + Up** | Page Up |
+> | **Fn + Down** | Page Down |
+> | **Fn + Delete (Backspace)** | DEL (Forward Delete) |
+> | **Fn Single Press** | Emoji & Symbols |
+> | **Fn + A** | Dock |
+> | **Fn + SHIFT + A** | Apps / Launchpad |
+> | **Fn + C** | Control Center |
+> | **Fn + D** | Dictation |
+> | **Fn + E** | Emoji & Symbols |
+> | **Fn + F** | Full Screen |
+> | **Fn + H** | Show Desktop |
+> | **Fn + N** | Notification Center |
+> | **Fn + Q** | Quick Note |
+> | **Fn + S** | Search / Siri |>
 
-    Fn + Left   → Home
-    Fn + Right  → End
-    Fn + Up     → Page Up
-    Fn + Down   → Page Down
 
-    Fn + n → Notification Center
-    etc...
+**An Apple VID/PID is required for native Fn behavior - there's no way around it.**
 
-Apple VID/PID is absolutely required and there's no way around it.
+On a generic VID/PID, macOS does not provide the Apple FnKeyboardUsageMap / FnFunctionUsageMap. With Apple VID/PID, macOS applies an appropriate Apple keyboard personality and supplies the mappings to enable the Fn modifier.
 
-On a generic VID/PID, macOS may use `AppleUserHIDEventDriver`. Its `IOHIDKeyboardFilter` does not receive the Apple `FnKeyboardUsageMap` / `FnFunctionUsageMap` properties merely because the HID descriptor contains `FF/03`.
+### Requirements Summary:
 
-With real Apple VID/PID, the keyboard matches an appropriate Apple keyboard personality, macOS supplies those Fn maps and `FF/03` functions as the native Fn modifier.
+1. **Fn key representation:** `AppleVendorTopCase / KeyboardFn` (`FF/03`) - _this can be controlled in keyboard firmware_
+2. **macOS keyboard configuration:** a driver/personality that supplies Apple's Fn mappings - _this can only be controlled by system software_
 
-So there are two separate requirements:
+---
 
-1. **Fn key representation:** `AppleVendorTopCase / KeyboardFn` (`FF/03`)
-2. **macOS keyboard configuration:** a driver/personality that supplies Apple's Fn mappings
+> [!NOTE]
+> <strong>*</strong> the only two codes that are not automatically handled by the system are **DICTATION (F5)** and **DO NOT DISTURB (F6)** - they just aren't enabled by default on any known Apple VID/PID combination. To add them as keys, use drashna's extra_extra_key module: https://github.com/drashna/qmk_modules/tree/main/extra_extra_key
 
-#### For QMK configurations using an Apple-compatible VID/PID, `FF/03` is the required HID representation for a physical Apple-style Fn key. Using Globe is not equivalent and will never work to match real Apple keyboard Fn behavior.

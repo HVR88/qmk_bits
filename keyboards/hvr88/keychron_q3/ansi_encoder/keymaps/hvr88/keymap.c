@@ -25,27 +25,17 @@ enum layers{
 
 // Tap: Mute / Hold: Power
 #define MUTE_PWR LT(0, KC_MUTE)
-#define KC_SCREENSHOT LT(0, KC_ESC)
-
-enum custom_keycodes {
-    MAC_GLOBE_FN = SAFE_RANGE,
-    MAC_SCREENSHOT_CTRL,
-};
-
-static uint16_t mac_globe_fn_timer;
-static bool mac_globe_fn_pressed;
-static bool mac_apple_fn_active;
 
 bool hvr88_red_base = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MAC_BASE] = LAYOUT_tkl_f13_ansi(
-        KC_ESC,     KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,    MUTE_PWR,  KC_SCREENSHOT, KC_F19,   KC_F18,
+        KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,    MUTE_PWR,  MAC_SCRNSHOT_AREA, KC_F19,   KC_F18,
         KC_GRV,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,  KC_EQL,     KC_BSPC,  KC_INS,   KC_HOME,  KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,    KC_BSLS,  KC_DEL,   KC_END,   KC_PGDN,
         KC_LCTL,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_ENT,
         KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,              KC_RSFT,            KC_UP,
-        MAC_GLOBE_FN, KC_LOPT,  KC_LCMD,                            KC_SPC,                                 KC_RCMD,  KC_ROPT,  KC_RCTL,  MAC_GLOBE_FN, KC_LEFT,  KC_DOWN,  KC_RGHT),
+        MAC_FN_QMK_FN, KC_LOPT,  KC_LCMD,                            KC_SPC,                                 KC_RCMD,  KC_ROPT,  KC_RCTL,  MAC_FN_QMK_FN, KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [MAC_FN] = LAYOUT_tkl_f13_ansi(
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,     _______,  _______,  _______,  QK_BOOT,
@@ -88,12 +78,6 @@ void housekeeping_task_user(void) {
         host_keyboard_led_state().caps_lock ||
         (mods & MOD_MASK_SHIFT);
 
-    if (mac_globe_fn_pressed &&
-        !mac_apple_fn_active &&
-        timer_elapsed(mac_globe_fn_timer) >= TAPPING_TERM) {
-        register_code16(KC_APPLE_FN);
-        mac_apple_fn_active = true;
-    }
 }
 
 void keyboard_post_init_user(void) {
@@ -117,54 +101,9 @@ static bool process_tap_or_long_press_key(
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (mac_globe_fn_pressed &&
-        record->event.pressed &&
-        keycode != MAC_GLOBE_FN &&
-        !mac_apple_fn_active) {
-        register_code16(KC_APPLE_FN);
-        mac_apple_fn_active = true;
-    }
-
     switch (keycode) {
-        case MAC_GLOBE_FN:
-            if (record->event.pressed) {
-                mac_globe_fn_timer = timer_read();
-                mac_globe_fn_pressed = true;
-                mac_apple_fn_active = false;
-                layer_on(MAC_FN);
-            } else {
-                layer_off(MAC_FN);
-                mac_globe_fn_pressed = false;
-
-                if (mac_apple_fn_active) {
-                    unregister_code16(KC_APPLE_FN);
-                    mac_apple_fn_active = false;
-                } else {
-                    tap_code16(KC_GLOBE);
-                }
-            }
-            return false;
-
         case MUTE_PWR:
             return process_tap_or_long_press_key(record, KC_PWR);
-
-        case KC_SCREENSHOT:
-            if (get_mods() == MOD_BIT(KC_LCMD)) {
-                tap_code16(SCMD(KC_5));
-            } else {
-                tap_code16(SCMD(KC_4));
-            }
-            return false;
-
-        case MAC_SCREENSHOT_CTRL:
-            if (record->event.pressed) {
-                if (get_mods() == MOD_BIT(KC_LCMD)) {
-                    tap_code16(C(SCMD(KC_5)));
-                } else {
-                    tap_code16(C(SCMD(KC_4)));
-                }
-            }
-            return false;
     }
 
     return true;

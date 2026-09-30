@@ -1,0 +1,49 @@
+{
+    "module_name": "Pingato macOS Keys",
+    "maintainer": "HVR88",
+    "license": "GPL-2.0-or-later",
+    "keycodes": [
+        {
+            "key": "MAC_KEY_GLOBE"
+        },
+        {
+            "key": "MAC_KEY_FN"
+        },
+        {
+            "key": "MAC_DICTATION"
+        },
+        {
+            "key": "MAC_DND"
+        },
+        {
+            "key": "MAC_FN_GLOBE"
+        },
+        {
+            "key": "MAC_FN_QMK_FN"
+        },
+        {
+            "key": "MAC_SCRNSHOT"
+        },
+        {
+            "key": "MAC_SCRNSHOT_CB"
+        },
+        {
+            "key": "MAC_SCRNSHOT_AREA"
+        },
+        {
+            "key": "MAC_SCRNSHOT_AREA_CB"
+        },
+        {
+            "key": "MAC_SCRNSHOT_OPT"
+        },
+        {
+            "key": "MAC_SCRNSHOT_OPT_CB"
+        },
+        {
+            "key": "MAC_SIRI_AREA"
+        },
+        {
+            "key": "MAC_SIRI_WINDOW"
+        }
+    ]
+}
