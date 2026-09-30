@@ -9,7 +9,7 @@ static bool mac_apple_fn_active;
 static uint16_t mac_last_action_keycode;
 static uint16_t mac_last_action_timer;
 
-#define MACOS_KEYS_SELF_CANCEL_TIMEOUT 3000
+#define MACOS_KEYS_SELF_CANCEL_TIMEOUT 2000
 
 static bool process_self_cancel_action(uint16_t keycode, uint16_t action) {
     if (mac_last_action_keycode == keycode &&
