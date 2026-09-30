@@ -14,13 +14,11 @@ See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98
 * **Apple Fn in QMK: Must be `FF/03`, not Globe**
 
 ---
-**When implementing an Apple-style **Fn** key in QMK, the accurate HID usage is:
-**
+**When implementing an Apple-style **Fn** key in QMK, the accurate HID usage is:**
     Usage Page: 0xFF   (AppleVendorTopCase)
     Usage:      0x03   (KeyboardFn)
 
-**In other words:
-**
+**In other words:**
     AppleVendorTopCase / KeyboardFn = FF/03
 
 This is distinct/different from the **Globe** key.
