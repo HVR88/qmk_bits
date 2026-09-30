@@ -26,23 +26,6 @@ enum layers{
 // Tap: Mute / Hold: Power
 #define MUTE_PWR LT(0, KC_MUTE)
 
-enum custom_keycodes {
-    MAC_GLOBE_FN = SAFE_RANGE,
-    MAC_SCRNSHOT,
-    MAC_SCRNSHOT_CB,
-    MAC_SCRNSHOT_AREA,
-    MAC_SCRNSHOT_AREA_CB,
-    MAC_SCRNSHOT_OPT,
-    MAC_SCRNSHOT_OPT_CB,
-    MAC_ASKSIRI_AREA,
-    MAC_SIRI_WINDOW,
-};
-
-static uint16_t mac_globe_fn_timer;
-static bool mac_globe_fn_pressed;
-static bool mac_apple_fn_active;
-static uint16_t mac_last_screenshot_keycode;
-
 bool hvr88_red_base = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -95,12 +78,6 @@ void housekeeping_task_user(void) {
         host_keyboard_led_state().caps_lock ||
         (mods & MOD_MASK_SHIFT);
 
-    if (mac_globe_fn_pressed &&
-        !mac_apple_fn_active &&
-        timer_elapsed(mac_globe_fn_timer) >= TAPPING_TERM) {
-        register_code16(KC_APPLE_FN);
-        mac_apple_fn_active = true;
-    }
 }
 
 void keyboard_post_init_user(void) {
@@ -124,89 +101,9 @@ static bool process_tap_or_long_press_key(
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (mac_globe_fn_pressed &&
-        record->event.pressed &&
-        keycode != MAC_GLOBE_FN &&
-        !mac_apple_fn_active) {
-        register_code16(KC_APPLE_FN);
-        mac_apple_fn_active = true;
-    }
-
     switch (keycode) {
-        case MAC_GLOBE_FN:
-            if (record->event.pressed) {
-                mac_globe_fn_timer = timer_read();
-                mac_globe_fn_pressed = true;
-                mac_apple_fn_active = false;
-                layer_on(MAC_FN);
-            } else {
-                layer_off(MAC_FN);
-                mac_globe_fn_pressed = false;
-
-                if (mac_apple_fn_active) {
-                    unregister_code16(KC_APPLE_FN);
-                    mac_apple_fn_active = false;
-                } else {
-                    tap_code16(KC_GLOBE);
-                }
-            }
-            return false;
-
         case MUTE_PWR:
             return process_tap_or_long_press_key(record, KC_PWR);
-
-        case MAC_SCRNSHOT:
-        case MAC_SCRNSHOT_CB:
-        case MAC_SCRNSHOT_AREA:
-        case MAC_SCRNSHOT_AREA_CB:
-        case MAC_SCRNSHOT_OPT:
-        case MAC_SCRNSHOT_OPT_CB:
-            if (record->event.pressed) {
-                if (mac_last_screenshot_keycode == keycode) {
-                    tap_code(KC_ESC);
-                    mac_last_screenshot_keycode = 0;
-                } else {
-                    switch (keycode) {
-                        case MAC_SCRNSHOT:
-                            tap_code16(SCMD(KC_3));
-                            break;
-                        case MAC_SCRNSHOT_CB:
-                            tap_code16(C(SCMD(KC_3)));
-                            break;
-                        case MAC_SCRNSHOT_AREA:
-                            tap_code16(SCMD(KC_4));
-                            break;
-                        case MAC_SCRNSHOT_AREA_CB:
-                            tap_code16(C(SCMD(KC_4)));
-                            break;
-                        case MAC_SCRNSHOT_OPT:
-                            tap_code16(SCMD(KC_5));
-                            break;
-                        case MAC_SCRNSHOT_OPT_CB:
-                            tap_code16(C(SCMD(KC_5)));
-                            break;
-                    }
-                    mac_last_screenshot_keycode = keycode;
-                }
-            }
-            return false;
-
-        case MAC_ASKSIRI_AREA:
-        case MAC_SIRI_WINDOW:
-            if (record->event.pressed) {
-                if (mac_last_screenshot_keycode == keycode) {
-                    tap_code(KC_ESC);
-                    mac_last_screenshot_keycode = 0;
-                } else {
-                    if (keycode == MAC_ASKSIRI_AREA) {
-                        tap_code16(S(KC_6));
-                    } else {
-                        tap_code16(SCMD(KC_SPC));
-                    }
-                    mac_last_screenshot_keycode = keycode;
-                }
-            }
-            return false;
     }
 
     return true;
