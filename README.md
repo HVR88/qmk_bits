@@ -3,38 +3,52 @@
 
 See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98ce37414c6c4?permalink_comment_id=6397510#gistcomment-6397510
 
+### Fn support, and other vendor-defined HID usages (i.e. non-standard), are strictly enabled by macOS only for specific Apple VID/PID combinations recognized during USB enumeration - they're hard-coded into macOS.
 
-### Requirement: Apple VID 0x05AC and compatible PID (examples: 0x021D or 0x0320 or ...)
+#### Requirements:
+* **Apple VID 0x05AC and compatible PID (examples: 0x021D or 0x0320 or ...)**
+* **Apple Fn in QMK: Must be `FF/03`, not Globe**
 
-## Apple Fn in QMK: Must be `FF/03`, not Globe
-
-When implementing an Apple-style **Fn** key in QMK, the accurate HID usage is:
-
+---
+**When implementing an Apple-style **Fn** key in QMK, the accurate HID usage is:
+**
     Usage Page: 0xFF   (AppleVendorTopCase)
     Usage:      0x03   (KeyboardFn)
 
-In other words:
-
+**In other words:
+**
     AppleVendorTopCase / KeyboardFn = FF/03
 
 This is distinct/different from the **Globe** key.
 
-(Some) Modern Apple keyboards label the physical key `fn` / 🌐, which can make it tempting to treat Globe and Fn as interchangeable - they're not. At the HID level, Apple's Fn processing only recognizes `FF/03` as the real Apple Fn key.
+(Some) Modern Apple keyboards label the physical key `fn` / 🌐, which can make it tempting to treat Globe and Fn as interchangeable - _they're not_. At the HID level, Apple's Fn processing only recognizes `FF/03` as the real Apple Fn key.
 
 ### Why this matters
 
 With a keyboard configuration that macOS recognizes through an appropriate Apple keyboard personality, `FF/03` participates in the native Apple Fn behavior, including mappings such as:
 
-    F1 to F12  → all of Apple's normal media-keys
-    Fn + F1 to F12  → Real Function Keys
+> [!NOTE]
+>
+> | Key | Result |
+> | --- | --- |
+> | **F1 to F12** | Apple's normal media-keys (except DICTATION and DO NOT DISTURB) **\*** |
+> | **Fn + F1 to F12** | Real Function Keys |
+> | **Fn + Left** | Home |
+> | **Fn + Right** | End |
+> | **Fn + Up** | Page Up |
+> | **Fn + Down** | Page Down |
+> | **Fn + Delete (Backspace)** | DEL (Forward Delete) |
+> | **Fn + A** | Dock |
+> | **Fn + C** | Control Center |
+> | **Fn + D** | Dictation |
+> | **Fn + E** | Emoji & Symbols |
+> | **Fn + F** | Full Screen |
+> | **Fn + H** | Show Desktop |
+> | **Fn + M** | Mission Control |
+> | **Fn + N** | Notification Center |
+> | **Fn + Q** | Quick Note |
+> | **Fn + S** | Search / Siri |>
 
-    Fn + Left   → Home
-    Fn + Right  → End
-    Fn + Up     → Page Up
-    Fn + Down   → Page Down
-
-    Fn + n → Notification Center
-    etc...
 
 **An Apple VID/PID is required for native Fn behavior - there's no way around it.**
 
@@ -42,6 +56,11 @@ On a generic VID/PID, macOS does not provide the Apple FnKeyboardUsageMap / FnFu
 
 ### So there are two separate requirements:
 
-1. **Fn key representation:** `AppleVendorTopCase / KeyboardFn` (`FF/03`)
-2. **macOS keyboard configuration:** a driver/personality that supplies Apple's Fn mappings
+1. **Fn key representation:** `AppleVendorTopCase / KeyboardFn` (`FF/03`) - this can be controlled in keyboard firmware
+2. **macOS keyboard configuration:** a driver/personality that supplies Apple's Fn mappings - this can only be controlled by system software
+
+---
+
+> [!NOTE]
+> <strong>*</strong> the only two codes that are not automatically handled by the system are DICTATION (F5) and DO_NO_DISTURB (F6) - they just aren't enabled by default on any known Apple VID/PID combination. To get them, use drashna's extra_extra_key module: https://github.com/drashna/qmk_modules/tree/main/extra_extra_key
 
