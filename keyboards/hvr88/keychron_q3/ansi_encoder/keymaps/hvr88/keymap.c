@@ -35,6 +35,7 @@ enum custom_keycodes {
 static uint16_t mac_globe_fn_timer;
 static bool mac_globe_fn_pressed;
 static bool mac_apple_fn_active;
+static bool mac_screenshot_active;
 
 bool hvr88_red_base = false;
 
@@ -149,10 +150,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return process_tap_or_long_press_key(record, KC_PWR);
 
         case KC_SCREENSHOT:
-            if (get_mods() == MOD_BIT(KC_LCMD)) {
-                tap_code16(SCMD(KC_5));
-            } else {
-                tap_code16(SCMD(KC_4));
+            if (record->event.pressed) {
+                if (mac_screenshot_active) {
+                    tap_code(KC_ESC);
+                    mac_screenshot_active = false;
+                } else {
+                    if (get_mods() == MOD_BIT(KC_LCMD)) {
+                        tap_code16(SCMD(KC_5));
+                    } else {
+                        tap_code16(SCMD(KC_4));
+                    }
+                    mac_screenshot_active = true;
+                }
             }
             return false;
 
