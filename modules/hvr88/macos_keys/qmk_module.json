@@ -4,10 +4,10 @@
     "license": "GPL-2.0-or-later",
     "keycodes": [
         {
-            "key": "MAC_KEY_GLOBE"
+            "key": "MAC_GLOBE"
         },
         {
-            "key": "MAC_KEY_FN"
+            "key": "MAC_APPLE_FN"
         },
         {
             "key": "MAC_DICTATION"
@@ -16,10 +16,7 @@
             "key": "MAC_DND"
         },
         {
-            "key": "MAC_FN_GLOBE"
-        },
-        {
-            "key": "MAC_FN_QMK_FN"
+            "key": "MAC_GLOBE_FN"
         },
         {
             "key": "MAC_SCRNSHOT"
@@ -40,7 +37,7 @@
             "key": "MAC_SCRNSHOT_OPT_CB"
         },
         {
-            "key": "MAC_SIRI_AREA"
+            "key": "MAC_ASKSIRI_AREA"
         },
         {
             "key": "MAC_SIRI_WINDOW"
