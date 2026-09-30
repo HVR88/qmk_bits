@@ -43,6 +43,7 @@ With a keyboard configuration that macOS recognizes through an appropriate Apple
 > | **Fn + Down** | Page Down |
 > | **Fn + Delete (Backspace)** | DEL (Forward Delete) |
 > | **Fn + A** | Dock |
+> | **Fn + SHIFT + A** | Apps / Launchpad |
 > | **Fn + C** | Control Center |
 > | **Fn + D** | Dictation |
 > | **Fn + E** | Emoji & Symbols |
