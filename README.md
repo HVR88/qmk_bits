@@ -13,7 +13,7 @@ See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98
 
 
 ### The Two Hard Requirements:
-* **Apple VID 0x05AC and a compatible PID (examples: 0x021D or 0x0320 or ...)**
+* **Apple VID 0x05AC and a compatible PID (example: 0x021D)**
 * **Apple Fn in QMK: Must be `FF/03`, not Globe**
 
 ---

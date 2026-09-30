@@ -44,6 +44,12 @@
         },
         {
             "key": "MAC_SIRI_WINDOW"
+        },
+        {
+            "key": "MAC_MISSION_CONTROL"
+        },
+        {
+            "key": "MAC_APPS"
         }
     ]
 }

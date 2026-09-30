@@ -1,6 +1,6 @@
 {
     "manufacturer": "Pingato",
-    "maintainer": "lalalademaxiya1",
+    "maintainer": "HVR88",
     "bootloader": "stm32-dfu",
     "diode_direction": "ROW2COL",
     "dip_switch": {

@@ -78,6 +78,8 @@ static bool mac_reaches_host(uint16_t keycode) {
         case MAC_KEY_GLOBE:
         case MAC_DICTATION:
         case MAC_DND:
+        case MAC_MISSION_CONTROL:
+        case MAC_APPS:
             return true;
     }
     return IS_QK_BASIC(keycode) || IS_QK_MODS(keycode) || IS_QK_MOD_TAP(keycode) || IS_QK_LAYER_TAP(keycode) ||
@@ -189,8 +191,22 @@ static void mac_fn_other_key_pressed(uint16_t keycode) {
     }
 }
 
+// VIA custom keycodes are QK_KB_n, outside the community module range, so a
+// keymap can map one of them onto a module keycode.
+static uint16_t mac_via_keycode(uint16_t keycode) {
+#ifdef MAC_MISSION_CONTROL_VIA_KEYCODE
+    if (keycode == MAC_MISSION_CONTROL_VIA_KEYCODE) return MAC_MISSION_CONTROL;
+#endif
+#ifdef MAC_APPS_VIA_KEYCODE
+    if (keycode == MAC_APPS_VIA_KEYCODE) return MAC_APPS;
+#endif
+    return keycode;
+}
+
 bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
     bool pressed = record->event.pressed;
+
+    keycode = mac_via_keycode(keycode);
 
     switch (keycode) {
         case MAC_KEY_FN:
@@ -234,6 +250,14 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
 
         case MAC_DND:
             if (pressed) tap_code16(KC_DO_NOT_DISTURB);
+            return false;
+
+        case MAC_MISSION_CONTROL:
+            if (pressed) register_code(KC_MISSION_CONTROL); else unregister_code(KC_MISSION_CONTROL);
+            return false;
+
+        case MAC_APPS:
+            if (pressed) register_code(KC_LAUNCHPAD); else unregister_code(KC_LAUNCHPAD);
             return false;
     }
 

@@ -1,3 +1,6 @@
 #pragma once
 
 #define MAC_FN_QMK_FN_LAYER 1
+
+#define MAC_MISSION_CONTROL_VIA_KEYCODE QK_KB_0
+#define MAC_APPS_VIA_KEYCODE QK_KB_1

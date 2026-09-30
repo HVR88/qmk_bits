@@ -10,6 +10,8 @@ Reusable QMK Community Module for macOS-specific keyboard actions.
 - `MAC_FN_QMK_FN` — native Apple Fn plus a QMK Fn layer (see below)
 - `MAC_DICTATION` — Apple Dictation
 - `MAC_DND` — Apple Do Not Disturb
+- `MAC_MISSION_CONTROL` — Mission Control
+- `MAC_APPS` — Apps
 - `MAC_SCRNSHOT` — Shift-Command-3
 - `MAC_SCRNSHOT_CB` — Control-Shift-Command-3
 - `MAC_SCRNSHOT_AREA` — Shift-Command-4
@@ -20,6 +22,28 @@ Reusable QMK Community Module for macOS-specific keyboard actions.
 - `MAC_SIRI_WINDOW` — Shift-Command-Space
 
 Screenshot and Siri actions self-cancel with Escape when the same action is issued again within 2 seconds.
+
+`MAC_MISSION_CONTROL` and `MAC_APPS` send the Mission Control and Apps consumer usages for as long as the key is held.
+
+## VIA
+
+VIA names custom keys only in the `QK_KB_0`–`QK_KB_31` range, which community module keycodes cannot use. Map a VIA custom keycode onto a module keycode in `config.h`:
+
+```c
+#define MAC_MISSION_CONTROL_VIA_KEYCODE QK_KB_0
+#define MAC_APPS_VIA_KEYCODE QK_KB_1
+```
+
+The VIA keyboard definition then lists them in the same order under `customKeycodes`:
+
+```json
+"customKeycodes": [
+    { "name": "Mission Control", "title": "Mission Control", "shortName": "MCtrl" },
+    { "name": "Apps", "title": "Apps", "shortName": "Apps" }
+]
+```
+
+A mapped VIA keycode behaves exactly like the module keycode, including with the Fn keys.
 
 ## Fn keys
 
@@ -63,4 +87,4 @@ While `MAC_FN_GLOBE` or `MAC_FN_QMK_FN` is held:
 
 ## Core dependency
 
-This module currently requires the QMK core additions used by HVR88's QMK fork: `KC_GLOBE` and `KC_APPLE_FN`. The additional basic Apple keycodes `KC_DICTATION` and `KC_DO_NOT_DISTURB` are available from that same core patch.
+This module currently requires the QMK core additions used by HVR88's QMK fork: `KC_GLOBE` and `KC_APPLE_FN`. The additional basic Apple keycodes `KC_DICTATION` and `KC_DO_NOT_DISTURB` are available from that same core patch. `MAC_MISSION_CONTROL` and `MAC_APPS` use stock QMK consumer keycodes.
