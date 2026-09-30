@@ -2,11 +2,15 @@
 # Matching Original Apple Keyboards Fully with QMK
 
 See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98ce37414c6c4?permalink_comment_id=6397510#gistcomment-6397510
+<br>
+<br>
+> [!IMPORTANT]
+>### Fn support, and other non-standard (vendor-defined) HID usages, are hard-coded into macOS.
+>#### They're enabled by macOS only for specific Apple VID/PID combinations recognized during USB enumeration.
 
-### Fn support, and other vendor-defined HID usages (i.e. non-standard), are strictly enabled by macOS only for specific Apple VID/PID combinations recognized during USB enumeration - they're hard-coded into macOS.
 
-#### Requirements:
-* **Apple VID 0x05AC and compatible PID (examples: 0x021D or 0x0320 or ...)**
+#### Two Hard Requirements:
+* **Apple VID 0x05AC and a compatible PID (examples: 0x021D or 0x0320 or ...)**
 * **Apple Fn in QMK: Must be `FF/03`, not Globe**
 
 ---
