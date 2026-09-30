@@ -4,8 +4,8 @@
 See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98ce37414c6c4?permalink_comment_id=6397510#gistcomment-6397510
 <br>
 <br>
-> [!NOTE]
->This information, and macOS behavior, is current as of macOS 27 (2026) - no claims are made for prior or future macOS releases.
+
+## The information and macOS behavior described are current as of macOS 27 (2026)<br>No claims are made for prior nor future macOS releases.<br><br>
 
 > [!IMPORTANT]
 >### Fn support, and other non-standard (vendor-defined) HID usages, are hard-coded into macOS.
