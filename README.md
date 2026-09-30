@@ -29,7 +29,7 @@ This is distinct/different from the **Globe** key.
 
 ### Why this matters
 
-With a keyboard configuration that macOS recognizes through an appropriate Apple keyboard personality, `FF/03` participates in the native Apple Fn behavior, including mappings such as:
+With a keyboard configuration that macOS recognizes through an appropriate Apple keyboard personality, `FF/03` participates in the native Apple Fn behavior, with the mappings below. Globe does not.
 
 > [!NOTE]
 >
