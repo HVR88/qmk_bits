@@ -1,7 +1,7 @@
 
 # Matching Original Apple Keyboards Fully with QMK
 
-See the GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98ce37414c6c4?permalink_comment_id=6397510#gistcomment-6397510
+See fauxpark's GIST here: https://gist.github.com/fauxpark/010dcf5d6377c3a71ac98ce37414c6c4?permalink_comment_id=6397510#gistcomment-6397510
 
 
 ## Requirement: Apple VID 0x05AC, PID 0x021D
