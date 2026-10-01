@@ -108,7 +108,7 @@ compile() {
 }
 
 flash() {
-    echo "==> Flashing"
+    echo "==> Flashing (mass-erase so VIA/EEPROM keymap is wiped)"
     BIN="$QMK/hvr88_keychron_q3_hvr88.bin"
 
     if [ ! -f "$BIN" ]; then
@@ -122,7 +122,9 @@ flash() {
         sleep 0.5
     done
 
-    dfu-util -a 0 -s 0x08000000:leave -D "$BIN"
+    # mass-erase:force clears wear-leveled EEPROM (VIA dynamic keymap, RGB, etc.)
+    # before writing firmware. Without this, EEPROM survives flash and overrides keymap.c.
+    dfu-util -a 0 -s 0x08000000:mass-erase:force:leave -D "$BIN"
 }
 
 case "${1:---all}" in
