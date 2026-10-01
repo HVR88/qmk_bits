@@ -200,6 +200,48 @@ static uint16_t mac_via_keycode(uint16_t keycode) {
 #ifdef MAC_APPS_VIA_KEYCODE
     if (keycode == MAC_APPS_VIA_KEYCODE) return MAC_APPS;
 #endif
+#ifdef MAC_KEY_GLOBE_VIA_KEYCODE
+    if (keycode == MAC_KEY_GLOBE_VIA_KEYCODE) return MAC_KEY_GLOBE;
+#endif
+#ifdef MAC_KEY_FN_VIA_KEYCODE
+    if (keycode == MAC_KEY_FN_VIA_KEYCODE) return MAC_KEY_FN;
+#endif
+#ifdef MAC_FN_GLOBE_VIA_KEYCODE
+    if (keycode == MAC_FN_GLOBE_VIA_KEYCODE) return MAC_FN_GLOBE;
+#endif
+#ifdef MAC_FN_QMK_FN_VIA_KEYCODE
+    if (keycode == MAC_FN_QMK_FN_VIA_KEYCODE) return MAC_FN_QMK_FN;
+#endif
+#ifdef MAC_DICTATION_VIA_KEYCODE
+    if (keycode == MAC_DICTATION_VIA_KEYCODE) return MAC_DICTATION;
+#endif
+#ifdef MAC_DND_VIA_KEYCODE
+    if (keycode == MAC_DND_VIA_KEYCODE) return MAC_DND;
+#endif
+#ifdef MAC_SCRNSHOT_VIA_KEYCODE
+    if (keycode == MAC_SCRNSHOT_VIA_KEYCODE) return MAC_SCRNSHOT;
+#endif
+#ifdef MAC_SCRNSHOT_CB_VIA_KEYCODE
+    if (keycode == MAC_SCRNSHOT_CB_VIA_KEYCODE) return MAC_SCRNSHOT_CB;
+#endif
+#ifdef MAC_SCRNSHOT_AREA_VIA_KEYCODE
+    if (keycode == MAC_SCRNSHOT_AREA_VIA_KEYCODE) return MAC_SCRNSHOT_AREA;
+#endif
+#ifdef MAC_SCRNSHOT_AREA_CB_VIA_KEYCODE
+    if (keycode == MAC_SCRNSHOT_AREA_CB_VIA_KEYCODE) return MAC_SCRNSHOT_AREA_CB;
+#endif
+#ifdef MAC_SCRNSHOT_OPT_VIA_KEYCODE
+    if (keycode == MAC_SCRNSHOT_OPT_VIA_KEYCODE) return MAC_SCRNSHOT_OPT;
+#endif
+#ifdef MAC_SCRNSHOT_OPT_CB_VIA_KEYCODE
+    if (keycode == MAC_SCRNSHOT_OPT_CB_VIA_KEYCODE) return MAC_SCRNSHOT_OPT_CB;
+#endif
+#ifdef MAC_SIRI_AREA_VIA_KEYCODE
+    if (keycode == MAC_SIRI_AREA_VIA_KEYCODE) return MAC_SIRI_AREA;
+#endif
+#ifdef MAC_SIRI_WINDOW_VIA_KEYCODE
+    if (keycode == MAC_SIRI_WINDOW_VIA_KEYCODE) return MAC_SIRI_WINDOW;
+#endif
     return keycode;
 }
 

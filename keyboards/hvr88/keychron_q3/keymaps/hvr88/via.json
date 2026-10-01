@@ -16,6 +16,76 @@
             "name": "Apps",
             "title": "Apps",
             "shortName": "Apps"
+        },
+        {
+            "name": "Globe",
+            "title": "Globe",
+            "shortName": "Globe"
+        },
+        {
+            "name": "Apple Fn",
+            "title": "Apple Fn",
+            "shortName": "AFn"
+        },
+        {
+            "name": "Fn/Globe",
+            "title": "Fn/Globe hybrid",
+            "shortName": "FnGlb"
+        },
+        {
+            "name": "Fn+QMK Layer",
+            "title": "Apple Fn plus QMK Fn layer",
+            "shortName": "FnQMK"
+        },
+        {
+            "name": "Dictation",
+            "title": "Dictation",
+            "shortName": "Dict"
+        },
+        {
+            "name": "Do Not Disturb",
+            "title": "Do Not Disturb",
+            "shortName": "DND"
+        },
+        {
+            "name": "Screenshot",
+            "title": "Screenshot (Shift-Command-3)",
+            "shortName": "Scrn"
+        },
+        {
+            "name": "Screenshot CB",
+            "title": "Screenshot to clipboard",
+            "shortName": "ScrnCB"
+        },
+        {
+            "name": "Screenshot Area",
+            "title": "Screenshot area (Shift-Command-4)",
+            "shortName": "Area"
+        },
+        {
+            "name": "Screenshot Area CB",
+            "title": "Screenshot area to clipboard",
+            "shortName": "AreaCB"
+        },
+        {
+            "name": "Screenshot Options",
+            "title": "Screenshot options (Shift-Command-5)",
+            "shortName": "ScrnOp"
+        },
+        {
+            "name": "Screenshot Options CB",
+            "title": "Screenshot options to clipboard",
+            "shortName": "OpCB"
+        },
+        {
+            "name": "Siri Area",
+            "title": "Siri area (Shift-Command-6)",
+            "shortName": "SiriA"
+        },
+        {
+            "name": "Siri Window",
+            "title": "Siri window (Shift-Command-Space)",
+            "shortName": "SiriW"
         }
     ],
     "keycodes": [

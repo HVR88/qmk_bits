@@ -27,20 +27,34 @@ Screenshot and Siri actions self-cancel with Escape when the same action is issu
 
 ## VIA
 
-VIA names custom keys only in the `QK_KB_0`–`QK_KB_31` range, which community module keycodes cannot use. Map a VIA custom keycode onto a module keycode in `config.h`:
+VIA names custom keys only in the `QK_KB_0`–`QK_KB_31` range, which community module keycodes cannot use. Map VIA custom keycodes onto module keycodes in `config.h`. The `customKeycodes` array order in the VIA definition must match these indices:
+
+| Index | Define | Module keycode |
+|------:|--------|----------------|
+| 0 | `MAC_MISSION_CONTROL_VIA_KEYCODE` | `MAC_MISSION_CONTROL` |
+| 1 | `MAC_APPS_VIA_KEYCODE` | `MAC_APPS` |
+| 2 | `MAC_KEY_GLOBE_VIA_KEYCODE` | `MAC_KEY_GLOBE` |
+| 3 | `MAC_KEY_FN_VIA_KEYCODE` | `MAC_KEY_FN` |
+| 4 | `MAC_FN_GLOBE_VIA_KEYCODE` | `MAC_FN_GLOBE` |
+| 5 | `MAC_FN_QMK_FN_VIA_KEYCODE` | `MAC_FN_QMK_FN` |
+| 6 | `MAC_DICTATION_VIA_KEYCODE` | `MAC_DICTATION` |
+| 7 | `MAC_DND_VIA_KEYCODE` | `MAC_DND` |
+| 8 | `MAC_SCRNSHOT_VIA_KEYCODE` | `MAC_SCRNSHOT` |
+| 9 | `MAC_SCRNSHOT_CB_VIA_KEYCODE` | `MAC_SCRNSHOT_CB` |
+| 10 | `MAC_SCRNSHOT_AREA_VIA_KEYCODE` | `MAC_SCRNSHOT_AREA` |
+| 11 | `MAC_SCRNSHOT_AREA_CB_VIA_KEYCODE` | `MAC_SCRNSHOT_AREA_CB` |
+| 12 | `MAC_SCRNSHOT_OPT_VIA_KEYCODE` | `MAC_SCRNSHOT_OPT` |
+| 13 | `MAC_SCRNSHOT_OPT_CB_VIA_KEYCODE` | `MAC_SCRNSHOT_OPT_CB` |
+| 14 | `MAC_SIRI_AREA_VIA_KEYCODE` | `MAC_SIRI_AREA` |
+| 15 | `MAC_SIRI_WINDOW_VIA_KEYCODE` | `MAC_SIRI_WINDOW` |
+
+Example:
 
 ```c
-#define MAC_MISSION_CONTROL_VIA_KEYCODE QK_KB_0
-#define MAC_APPS_VIA_KEYCODE QK_KB_1
-```
-
-The VIA keyboard definition then lists them in the same order under `customKeycodes`:
-
-```json
-"customKeycodes": [
-    { "name": "Mission Control", "title": "Mission Control", "shortName": "MCtrl" },
-    { "name": "Apps", "title": "Apps", "shortName": "Apps" }
-]
+#define MAC_MISSION_CONTROL_VIA_KEYCODE  QK_KB_0
+#define MAC_APPS_VIA_KEYCODE             QK_KB_1
+#define MAC_KEY_GLOBE_VIA_KEYCODE        QK_KB_2
+/* …through MAC_SIRI_WINDOW_VIA_KEYCODE QK_KB_15 */
 ```
 
 A mapped VIA keycode behaves exactly like the module keycode, including with the Fn keys.
