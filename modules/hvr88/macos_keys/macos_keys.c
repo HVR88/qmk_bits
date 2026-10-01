@@ -1,5 +1,6 @@
 #include "quantum.h"
 #include "community_modules.h"
+#include "macos_keys.h"
 
 ASSERT_COMMUNITY_MODULES_MIN_API_VERSION(1, 0, 0);
 
@@ -15,6 +16,7 @@ enum {
     MAC_FN_OWNER_KEY    = 1 << 0,
     MAC_FN_OWNER_GLOBE  = 1 << 1,
     MAC_FN_OWNER_QMK_FN = 1 << 2,
+    MAC_FN_OWNER_AFN    = 1 << 3,
 };
 
 // MAC_FN_GLOBE states. It owns Apple Fn in MAC_FN_NATIVE and only there.
@@ -249,6 +251,19 @@ bool process_record_macos_keys(uint16_t keycode, keyrecord_t *record) {
     bool pressed = record->event.pressed;
 
     keycode = mac_via_keycode(keycode);
+
+    // AFN(kc) — hold Apple Fn for as long as this key is held, like C(kc).
+    if (IS_QK_AFN(keycode)) {
+        uint8_t basic = QK_AFN_GET_KEYCODE(keycode);
+        if (pressed) {
+            mac_apple_fn_take(MAC_FN_OWNER_AFN);
+            register_code(basic);
+        } else {
+            unregister_code(basic);
+            mac_apple_fn_drop(MAC_FN_OWNER_AFN);
+        }
+        return false;
+    }
 
     switch (keycode) {
         case MAC_KEY_FN:

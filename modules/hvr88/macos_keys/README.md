@@ -4,6 +4,7 @@ Reusable QMK Community Module for macOS-specific keyboard actions.
 
 ## Keycodes
 
+- `AFN(kc)` — Apple Fn + basic key on one mapping, same shape as `C(kc)` / `SCMD(kc)` (e.g. `AFN(KC_S)`)
 - `MAC_KEY_GLOBE` — native Globe
 - `MAC_KEY_FN` — native Apple Fn
 - `MAC_FN_GLOBE` — firmware hybrid: tap for Globe, hold or chord for native Apple Fn (see below)
@@ -61,7 +62,19 @@ A mapped VIA keycode behaves exactly like the module keycode, including with the
 
 ## Fn keys
 
-Native Apple Fn is the vendor-defined HID usage `KC_APPLE_FN`. macOS only gives it native behavior for Apple-recognized VID/PIDs. The module offers three ways to use it.
+Native Apple Fn is the vendor-defined HID usage `KC_APPLE_FN`. macOS only gives it native behavior for Apple-recognized VID/PIDs.
+
+### `AFN(kc)`
+
+Single-key Apple Fn chord, analogous to `C(KC_V)`:
+
+```c
+AFN(KC_S)   // Fn+S for as long as the key is held
+```
+
+Press registers Apple Fn then the basic key; release unregisters in reverse. `kc` must be a basic keycode (same class as the low byte of `C(kc)`).
+
+The module offers three hold-key ways to use raw Apple Fn as well:
 
 ### `MAC_KEY_FN`
 
