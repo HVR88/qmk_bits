@@ -14,6 +14,9 @@ enum {
 // Single tap: Mute / Double tap: macOS power menu (Control–Power)
 #define MUTE_PWR TD(TD_MUTE_PWR)
 
+// Hold: bootloader (tap does nothing)
+#define BOOT_HOLD LT(0, KC_NO)
+
 static void dance_mute_pwr_finished(tap_dance_state_t *state, void *user_data) {
     if (state->count == 1) {
         tap_code16(KC_MUTE);
@@ -30,6 +33,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case MUTE_PWR:
             return 400; // knob double-press needs more room than default 200ms
+        case BOOT_HOLD:
+            return 1000; // require a clear long press for bootloader
         default:
             return TAPPING_TERM;
     }
@@ -47,7 +52,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         MAC_FN_QMK_FN, KC_LOPT,  KC_LCMD,                            KC_SPC,                                 KC_RCMD,  KC_ROPT,  KC_RCTL,  MAC_FN_QMK_FN, KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [MAC_FN] = LAYOUT_tkl_f13_ansi(
-        C(S(KC_PWR)),  _______,  _______,  _______,  _______,  KC_F5,  KC_F6,  _______,  _______,  _______,  _______,  _______,  _______,     C(S(KC_PWR)),  _______,  _______,  QK_BOOT,
+        C(S(KC_PWR)),  _______,  _______,  _______,  _______,  KC_F5,  KC_F6,  _______,  _______,  _______,  _______,  _______,  _______,     C(S(KC_PWR)),  _______,  _______,  BOOT_HOLD,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,
         KC_CAPS,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,              _______,
@@ -98,4 +103,16 @@ void keyboard_post_init_user(void) {
     rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_HVR88_REACTIVE);
     rgb_matrix_set_speed_noeeprom(64);
     rgb_matrix_sethsv_noeeprom(58, 165, 255);
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case BOOT_HOLD:
+            // Hold past tapping term → bootloader; ignore tap
+            if (record->tap.count == 0 && record->event.pressed) {
+                bootloader_jump();
+            }
+            return false;
+    }
+    return true;
 }
