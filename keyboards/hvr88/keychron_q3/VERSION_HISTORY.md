@@ -10,3 +10,4 @@ Look up any past version with search (e.g. find `1.0.8`) or by counting lines fo
 1.0.11  2026-09-30
 1.0.12  2026-09-30
 1.0.13  2026-09-30
+1.0.14  2026-10-01

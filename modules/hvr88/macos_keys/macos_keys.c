@@ -54,7 +54,7 @@ static uint16_t mac_chord(uint16_t keycode) {
         case MAC_SCRNSHOT_AREA_CB: return C(SCMD(KC_4));
         case MAC_SCRNSHOT_OPT:     return SCMD(KC_5);
         case MAC_SCRNSHOT_OPT_CB:  return C(SCMD(KC_5));
-        case MAC_SIRI_AREA:        return S(KC_6);
+        case MAC_SIRI_AREA:        return SCMD(KC_6);
         case MAC_SIRI_WINDOW:      return SCMD(KC_SPC);
         default:                   return 0;
     }

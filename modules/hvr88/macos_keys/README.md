@@ -18,7 +18,7 @@ Reusable QMK Community Module for macOS-specific keyboard actions.
 - `MAC_SCRNSHOT_AREA_CB` — Control-Shift-Command-4
 - `MAC_SCRNSHOT_OPT` — Shift-Command-5
 - `MAC_SCRNSHOT_OPT_CB` — Control-Shift-Command-5
-- `MAC_SIRI_AREA` — Shift-6
+- `MAC_SIRI_AREA` — Shift-Command-6
 - `MAC_SIRI_WINDOW` — Shift-Command-Space
 
 Screenshot and Siri actions self-cancel with Escape when the same action is issued again within 2 seconds.
