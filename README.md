@@ -45,17 +45,17 @@ With a keyboard configuration that macOS recognizes through an appropriate Apple
 > | **Fn + Up** | Page Up |
 > | **Fn + Down** | Page Down |
 > | **Fn + Delete (Backspace)** | DEL (Forward Delete) |
-> | **Fn Single Press** | Emoji & Symbols |
-> | **Fn + A** | Dock |
-> | **Fn + SHIFT + A** | Apps / Launchpad |
-> | **Fn + C** | Control Center |
+> | **Fn Single Press** | Emoji & Symbols Toggle |
+> | **Fn + A** | Show Dock Toggle |
+> | **Fn + SHIFT + A** | Apps / Launchpad Toggle |
+> | **Fn + C** | Control Center Toggle |
 > | **Fn + D** | Dictation |
-> | **Fn + E** | Emoji & Symbols |
-> | **Fn + F** | Full Screen |
-> | **Fn + H** | Show Desktop |
-> | **Fn + N** | Notification Center |
+> | **Fn + E** | Emoji & Symbols Toggle |
+> | **Fn + F** | Full Screen Toggle |
+> | **Fn + H** | Show Desktop Toggle (HOLD for momentary)|
+> | **Fn + N** | Notification Center Toggle (HOLD for momentary)|
 > | **Fn + Q** | Quick Note |
-> | **Fn + S** | Search / Siri |>
+> | **Fn + S** | Search / Siri Toggle (HOLD for voice)|>
 
 
 **An Apple VID/PID is required for native Fn behavior - there's no way around it.**
